@@ -1,0 +1,134 @@
+<div class="sidebar-sticky ">
+  <ul class="nav flex-column ">
+    <li class="nav-item ">
+      <div class="icon-sidebar mr-2 ml-3">
+        <i class="Icon Icon--bird"></i>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link  d-flex flex-row align-items-center"
+        [routerLink]="['/']"
+        routerLinkActive="nav-link-active"
+      >
+        <div class="icon-sidebar mr-2">
+          <i class="Icon Icon--homeFilled"></i>
+        </div>
+        <div class="d-none d-xl-block" style="font-weight: bold">
+          Home
+        </div>
+      </a>
+    </li>
+    <li class="nav-item d-none d-md-block">
+      <a
+        class="nav-link  d-flex flex-row align-items-center"
+        [routerLink]="['/explore']"
+        routerLinkActive="nav-link-active"
+      >
+        <div class="icon-sidebar mr-2">
+          <i class="Icon Icon--discover"></i>
+        </div>
+        <div class="d-none d-xl-block " style="font-weight: bold">
+          Explore
+        </div>
+      </a>
+    </li>
+    <li class="nav-item d-block d-md-none">
+      <a
+        class="nav-link  d-flex flex-row align-items-center"
+        [routerLink]="['/explore']"
+        routerLinkActive="nav-link-active"
+      >
+        <div class="icon-sidebar mr-2">
+          <i class="Icon Icon--search"></i>
+        </div>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link d-flex flex-row align-items-center"
+        [routerLink]="['/notifications']"
+        routerLinkActive="nav-link-active"
+      >
+        <div class="icon-sidebar mr-2">
+          <i class="Icon Icon--deskBell"></i>
+        </div>
+        <div class="d-none d-xl-block" style="font-weight: bold">
+          Notifications
+        </div>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link  d-flex flex-row align-items-center"
+        [routerLink]="['/messages']"
+        routerLinkActive="nav-link-active"
+      >
+        <div class="icon-sidebar mr-2">
+          <i class="Icon Icon--message"></i>
+        </div>
+        <div class="d-none d-xl-block" style="font-weight: bold">
+          Messages
+        </div>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link  d-flex flex-row align-items-center"
+        [routerLink]="['/:username/bookmarks']"
+        routerLinkActive="nav-link-active"
+      >
+        <div class="icon-sidebar mr-2">
+          <i class="Icon Icon--bookmark"></i>
+        </div>
+        <div class="d-none d-xl-block" style="font-weight: bold">
+          Bookmarks
+        </div>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link  d-flex flex-row align-items-center"
+        [routerLink]="['/:username/lists']"
+        routerLinkActive="nav-link-active"
+      >
+        <div class="icon-sidebar mr-2">
+          <i class="Icon Icon--summary"></i>
+        </div>
+        <div class="d-none d-xl-block" style="font-weight: bold">
+          Lists
+        </div>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link  d-flex flex-row align-items-center"
+        [routerLink]="['/:username']"
+        routerLinkActive="nav-link-active"
+      >
+        <div class="icon-sidebar mr-2">
+          <i class="Icon Icon--bookmark"></i>
+        </div>
+        <div class="d-none d-xl-block" style="font-weight: bold">
+          Profile
+        </div>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link  d-flex flex-row align-items-center">
+        <div class="icon-sidebar mr-2">
+          <i class="Icon Icon--cog"></i>
+        </div>
+        <div class="d-none d-xl-block" style="font-weight: bold">
+          More
+        </div>
+      </a>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-lightblue d-none d-xl-block">Twoot</button>
+      <button class="btn btn-lightblue d-block d-xl-none">
+        <i class="Icon Icon--tweet"></i>
+      </button>
+    </li>
+  </ul>
+</div>

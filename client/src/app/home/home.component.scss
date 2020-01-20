@@ -1,0 +1,20 @@
+@import 'src/styles.scss';
+
+.navbar {
+  border-bottom: 1px solid $line-color;
+}
+.profile-picture-twoot {
+  height: 49px;
+  width: 49px;
+  background-color: $main-color;
+  border-radius: 100%;
+}
+
+.twoot-input {
+  border: none;
+}
+
+.image-upload-icon {
+  color: $main-color;
+  font-size: 25px;
+}

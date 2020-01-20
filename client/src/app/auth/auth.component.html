@@ -1,0 +1,146 @@
+<div class="col-xs-12  no-gutter">
+  <div class="row">
+    <div
+      class="col-xs-6 left d-flex flex-column align-items-center justify-content-center"
+    >
+      <div class="titles-containter">
+        <div
+          class="left-content follow-your-interests mb-4 d-flex flex-row align-items-center"
+        >
+          <i class="Icon Icon--search mr-3"></i>
+          Follow your interests.
+        </div>
+        <div
+          class="left-content hear-people mb-4 d-flex flex-row align-items-center"
+        >
+          <i class="Icon Icon--people mr-3"></i>
+          Hear what people are talking about.
+        </div>
+        <div
+          class="left-content join-conversation d-flex flex-row align-items-center"
+        >
+          <i class="Icon Icon--reply mr-3"></i>
+          Join the conversation.
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-xs-6 right d-flex flex-column align-items-center justify-content-center"
+    >
+      <div class="auth-container">
+        <div
+          class="auth d-flex flex-row align-items-center justify-content-center"
+        >
+          <div class="input-auth mb-3 mr-2 align-self-start">
+            <input
+              type="text"
+              class="form-control"
+              aria-label="Default"
+              aria-describedby="inputGroup-sizing-default"
+              placeholder="Email or username"
+              [(ngModel)]="email"
+            />
+          </div>
+          <div class="input-auth mb-3 mr-2">
+            <input
+              type="password"
+              class="form-control"
+              aria-label="Default"
+              aria-describedby="inputGroup-sizing-default"
+              placeholder="Password"
+              [(ngModel)]="password"
+            />
+            <a style="color: #87898a; font-size: 12px;">Forgot password?</a>
+          </div>
+          <button
+            class="btn btn-clear-small align-self-start"
+            (click)="signin()"
+          >
+            Log in
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="container d-flex flex-column align-items-center justify-content-center"
+      >
+        <div class="icon-container align-self-start">
+          <i class="Icon Icon--bird twotter-icon "></i>
+        </div>
+
+        <div class="title mb-4">
+          <p>See what’s happening in the world right now</p>
+        </div>
+        <div class="join-twotter align-self-start mb-3">
+          Join Twotter today.
+        </div>
+        <button class="btn btn-lightblue mb-4">Sign up</button>
+        <button class="btn btn-clear">Log in</button>
+      </div>
+    </div>
+  </div>
+</div>
+<nav
+  class="navbar fixed-bottom navbar-expand-lg navbar-light bg-light"
+  style="height: 0px; margin-bottom: 12px;"
+>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Help Center</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Blog</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Status</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Jobs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Terms</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Privacy Poilicy </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Cookies</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Ads info</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Brand</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Apps</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Advertise</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Marketing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Businesses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Developers</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Directory</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Settings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">© 2020 Twotter</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<button class="btn btn-danger" (click)="logout()">Log out</button>

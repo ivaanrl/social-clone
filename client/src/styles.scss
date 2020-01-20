@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+/*@font-face {
+  font-family: 'edgeicons';
+  src: url('assets/fonts/edge-icons-Regular.woff');
+}*/
+$main-color: #1da1f2;
+$line-color: #e1e6eb;
+.btn-lightblue {
+  background-color: $main-color;
+  color: white;
+  border-radius: 100px;
+  padding: 6px 16px;
+  display: block;
+  width: 100%;
+  font-weight: bold;
+}
+
+.btn-clear {
+  background-color: white;
+  color: $main-color;
+  border: 1px solid $main-color;
+  border-radius: 100px;
+  padding: 6px 16px;
+  display: block;
+  width: 100%;
+  font-weight: bold;
+}
+
+.btn-clear-small {
+  @extend .btn-clear;
+  width: 13%;
+  min-width: fit-content;
+}

@@ -1,0 +1,14 @@
+<div
+  class="container d-flex justify-content-center"
+  *ngIf="router.url != '/auth'"
+>
+  <div class="row w-100">
+    <div class="col-xl-3">
+      <app-navbar></app-navbar>
+    </div>
+    <div class="col-xl-6">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+<app-auth *ngIf="router.url === '/auth'"></app-auth>
