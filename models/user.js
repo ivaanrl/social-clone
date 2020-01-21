@@ -2,6 +2,7 @@ const sequelize = require('../config/postgres.config');
 const Sequelize = require('sequelize');
 const Twoot = require('./twoot');
 const Favs = require('./fav');
+const Follows = require('./follows');
 
 module.exports = User = sequelize.define('user', {
   id: {
@@ -31,10 +32,10 @@ module.exports = User = sequelize.define('user', {
   location: {
     type: Sequelize.STRING
   },
-  createdAt: {
+  created_at: {
     type: Sequelize.DATE
   },
-  updatedAt: {
+  updated_at: {
     type: Sequelize.DATE
   },
   modified: {
@@ -44,9 +45,11 @@ module.exports = User = sequelize.define('user', {
     type: Sequelize.DATE
   }
 });
-User.hasMany(Twoot, { foreignKey: 'authorId' });
-User.hasMany(Favs, { foreignKey: 'userId' });
-Twoot.belongsTo(User, { foreignKey: 'authorId' });
-Twoot.hasMany(Favs, { foreignKey: 'twootId' });
-Fav.belongsTo(User, { foreignKey: 'userId' });
-Fav.belongsTo(Twoot, { foreignKey: 'twootId' });
+User.hasMany(Twoot, { foreignKey: 'author_id' });
+User.hasMany(Favs, { foreignKey: 'user_id' });
+Twoot.belongsTo(User, { foreignKey: 'author_id' });
+Twoot.hasMany(Favs, { foreignKey: 'twoot_id' });
+Fav.belongsTo(User, { foreignKey: 'user_id' });
+Fav.belongsTo(Twoot, { foreignKey: 'twoot_id' });
+User.hasMany(Follows, { as: 'Followers', foreignKey: 'follower_id' });
+User.hasMany(Follows, { as: 'Following', foreignKey: 'user_id' });

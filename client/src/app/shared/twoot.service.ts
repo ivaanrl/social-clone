@@ -12,11 +12,10 @@ export interface TwootContent {
 export class TwootService {
   twoot = new BehaviorSubject<Twoot>(null);
   twootUrl = 'http://localhost:5000/api/twoot';
-
   constructor(private http: HttpClient) {}
 
   createTwoot(content: string) {
-    if ((content = '')) {
+    if (content === '') {
       return;
     }
     return this.http
@@ -27,6 +26,15 @@ export class TwootService {
           return resData;
         })
       );
+  }
+
+  getTwoots() {
+    return this.http.get(this.twootUrl).pipe(
+      catchError(this.handleError),
+      tap(resData => {
+        return resData;
+      })
+    );
   }
 
   private handleError(errorRes: HttpErrorResponse) {

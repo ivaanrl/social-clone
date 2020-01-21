@@ -1,7 +1,5 @@
 const sequelize = require('../config/postgres.config');
 const Sequelize = require('sequelize');
-const User = require('./user');
-const Favs = require('./fav');
 
 module.exports = Twoot = sequelize.define('twoot', {
   id: {
@@ -10,13 +8,13 @@ module.exports = Twoot = sequelize.define('twoot', {
     allowNull: false,
     field: 'id'
   },
-  authorId: {
+  author_id: {
     type: Sequelize.STRING
   },
   content: {
     type: Sequelize.TEXT
   },
-  createdAt: {
+  created_at: {
     type: Sequelize.DATE
   }
 });

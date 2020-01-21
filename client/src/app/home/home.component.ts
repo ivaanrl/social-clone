@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getProgressWidth();
+    this.getTwoots();
   }
 
   async createTwoot() {
@@ -45,5 +46,18 @@ export class HomeComponent implements OnInit {
       this.progressWidth = 0;
       this.getProgressWidth();
     }, 900);
+  }
+
+  getTwoots() {
+    let twootObs: any;
+    twootObs = this.twootService.getTwoots();
+    twootObs.subscribe(
+      resData => {
+        console.log(resData);
+      },
+      errorMessage => {
+        this.error = errorMessage;
+      }
+    );
   }
 }

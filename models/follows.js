@@ -1,6 +1,7 @@
 const sequelize = require('../config/postgres.config');
 const Sequelize = require('sequelize');
-module.exports = Fav = sequelize.define('fav', {
+
+module.exports = Follows = sequelize.define('follows', {
   id: {
     type: Sequelize.STRING,
     primaryKey: true,
@@ -10,7 +11,10 @@ module.exports = Fav = sequelize.define('fav', {
   user_id: {
     type: Sequelize.STRING
   },
-  twoot_id: {
+  follow_id: {
     type: Sequelize.STRING
+  },
+  created_at: {
+    type: Sequelize.DATE
   }
 });
