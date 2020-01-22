@@ -2,6 +2,7 @@
 /****************NEW TWOOT **********************/
 .navbar {
   border-bottom: 1px solid $line-color;
+  min-width: 600px;
 }
 .profile-picture-twoot {
   height: 49px;
@@ -9,6 +10,10 @@
   background-color: $main-color;
   border-radius: 100%;
   margin-left: 5px;
+}
+
+.twoot-component {
+  min-width: 600px;
 }
 
 .twoot-input {

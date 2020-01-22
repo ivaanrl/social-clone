@@ -1,7 +1,13 @@
 export class User {
-  constructor(public email: string, private id: string) {}
+  constructor(
+    public email: string,
+    private id: string,
+    public username: string
+  ) {}
 
-  //get userId(){
-  //  if (!)
-  //}
+  get getUsername() {
+    if (this.username) {
+      return this.username;
+    }
+  }
 }

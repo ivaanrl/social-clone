@@ -41,6 +41,8 @@ app.use(passport.session());
 
 require('./routes/authRoutes')(app);
 require('./routes/twootRoutes')(app);
+require('./routes/profileRoutes')(app);
+require('./routes/followRoutes')(app);
 
 const PORT = process.env.PORT || 5000;
 

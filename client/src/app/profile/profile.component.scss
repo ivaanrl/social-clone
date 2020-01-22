@@ -1,0 +1,79 @@
+@import 'src/styles.scss';
+
+$muted-text: rgb(179, 174, 174);
+
+.profile-header {
+  position: relative;
+  width: 600px;
+  border: 1px solid $line-color;
+}
+
+.big-photo {
+  background-color: rgb(163, 188, 204);
+  width: 600px;
+  height: 200px;
+}
+
+.profile-picture {
+  width: 134px;
+  height: 134px;
+  background-color: rgb(163, 188, 204);
+  border: 3px solid white;
+  border-radius: 100%;
+  position: absolute;
+  top: 47%;
+  left: 2%;
+}
+
+.button-container {
+  height: 50px;
+}
+
+.btn-clear {
+  border-radius: 100%;
+  padding: 5px 10px;
+  font-size: 20px;
+}
+
+.back-button {
+  font-size: 25px;
+  color: $main-color;
+}
+
+.top {
+  border: 1px solid $line-color;
+}
+
+.name-top {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.twoot-count {
+  color: $muted-text;
+  font-size: 14px;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 19px;
+}
+
+.username {
+  color: $muted-text;
+  font-size: 15px;
+}
+
+.btn-lightblue {
+  min-width: 105px;
+}
+
+.btn-lightblue:hover {
+  background-color: rgb(216, 29, 75);
+}
+
+.btn-clear-big {
+  border-radius: 100px;
+  min-width: 105px;
+  font-size: 16px;
+}

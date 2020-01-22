@@ -20,7 +20,12 @@ module.exports = app => {
     passport.authenticate('local-signin'),
     (req, res, next) => {
       req.session.user = req.user.id;
-      res.json(req.user.id);
+      const response = {
+        email: req.user.email,
+        username: req.user.username,
+        id: req.user.id
+      };
+      res.json(response);
     }
   );
 

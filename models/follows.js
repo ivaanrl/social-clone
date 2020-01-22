@@ -11,10 +11,10 @@ module.exports = Follows = sequelize.define('follows', {
   user_id: {
     type: Sequelize.STRING
   },
-  follow_id: {
+  follower_id: {
     type: Sequelize.STRING
   },
-  created_at: {
+  createdAt: {
     type: Sequelize.DATE
   }
 });
