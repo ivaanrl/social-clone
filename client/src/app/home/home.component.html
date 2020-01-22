@@ -11,14 +11,14 @@
     aria-valuemax="100"
   ></div>
 </div>
-<div class=" d-flex flex-column ml-3 mt-2 twoot-component w-100">
+<div class=" d-flex flex-column  twoot-component w-100 mb-2">
   <div class="d-flex flex-row">
     <div class="profile-picture-twoot mr-3"></div>
     <input
       type="text"
       name="twootContent"
       placeholder="What's Happening?"
-      class="twoot-input"
+      class="twoot-input w-100"
       [(ngModel)]="twootContent"
     />
   </div>
@@ -38,3 +38,5 @@
     </div>
   </div>
 </div>
+
+<app-twoot *ngFor="let twoot of twootsArray" [twootContent]="twoot"></app-twoot>

@@ -1,0 +1,23 @@
+input {
+  border: none;
+  border-bottom: 2px solid rgb(153, 151, 151);
+}
+.container {
+  background-color: rgb(170, 166, 166) !important;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+.white {
+  padding: 50px 50px;
+  min-height: 70%;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.form-group {
+  padding-bottom: 10px;
+}
+
+small {
+  color: red;
+}

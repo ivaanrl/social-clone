@@ -8,9 +8,20 @@ import { AuthComponent } from './auth/auth.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SignupComponent } from './signup/signup.component';
+import { ProfileComponent } from './profile/profile.component';
+import { TwootComponent } from './twoot/twoot.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthComponent, HomeComponent, NavbarComponent],
+  declarations: [
+    AppComponent,
+    AuthComponent,
+    HomeComponent,
+    NavbarComponent,
+    SignupComponent,
+    ProfileComponent,
+    TwootComponent
+  ],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]

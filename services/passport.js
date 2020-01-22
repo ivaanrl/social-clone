@@ -2,8 +2,10 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcrypt-node');
 const uuid = require('uuid');
+const { Op } = require('sequelize');
 
 passport.serializeUser(function(user, done) {
+  console.log(user);
   done(null, user.dataValues.id);
 });
 
@@ -25,7 +27,7 @@ passport.use(
       try {
         const logUser = await User.findOne({
           where: {
-            email: email
+            [Op.or]: [{ email: email }, { username: email }]
           }
         });
         if (!logUser) {
@@ -50,6 +52,7 @@ passport.use(
       passReqToCallback: true
     },
     async (req, email, password, done) => {
+      console.log(req.body);
       const existingUser = await User.findOne({
         where: {
           email: email
@@ -63,7 +66,10 @@ passport.use(
           const newUser = await User.create({
             id: id,
             email: email,
-            password: bcrypt.hashSync(req.body.password)
+            password: bcrypt.hashSync(req.body.password),
+            first_name: req.body.firstname,
+            last_name: req.body.lastname,
+            username: req.body.username
           });
           return done(null, newUser);
         } catch (error) {

@@ -14,7 +14,7 @@ module.exports = Twoot = sequelize.define('twoot', {
   content: {
     type: Sequelize.TEXT
   },
-  created_at: {
+  createdAt: {
     type: Sequelize.DATE
   }
 });

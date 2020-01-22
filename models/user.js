@@ -32,10 +32,10 @@ module.exports = User = sequelize.define('user', {
   location: {
     type: Sequelize.STRING
   },
-  created_at: {
+  createdAt: {
     type: Sequelize.DATE
   },
-  updated_at: {
+  updatedAt: {
     type: Sequelize.DATE
   },
   modified: {

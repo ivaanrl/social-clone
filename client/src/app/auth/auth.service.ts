@@ -9,6 +9,14 @@ export interface Form {
   id: string;
 }
 
+export interface SignUpForm {
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   user = new BehaviorSubject<User>(null);
@@ -31,11 +39,20 @@ export class AuthService {
       );
   }
 
-  signup(email: string, password: string) {
+  signup(
+    username: string,
+    email: string,
+    firstname: string,
+    lastname: string,
+    password: string
+  ) {
     return this.http
       .post<Form>(this.signupUrl, {
-        email: email,
-        password: password
+        username,
+        email,
+        firstname,
+        lastname,
+        password
       })
       .pipe(
         catchError(this.handleError),
@@ -62,7 +79,7 @@ export class AuthService {
   }
 
   handleAuthentication(data: any) {
-    const user = new User('email', data);
+    const user = new User(data.email, data.id);
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));
   }

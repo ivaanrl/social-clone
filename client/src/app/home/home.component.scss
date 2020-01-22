@@ -1,5 +1,5 @@
 @import 'src/styles.scss';
-
+/****************NEW TWOOT **********************/
 .navbar {
   border-bottom: 1px solid $line-color;
 }
@@ -8,6 +8,7 @@
   width: 49px;
   background-color: $main-color;
   border-radius: 100%;
+  margin-left: 5px;
 }
 
 .twoot-input {
@@ -18,3 +19,8 @@
   color: $main-color;
   font-size: 25px;
 }
+
+.btn-container {
+  margin-right: 20px;
+}
+/******************** EVERY OTHER TWOOT ****************************/

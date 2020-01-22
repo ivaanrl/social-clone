@@ -1,0 +1,30 @@
+<div class="twoot-container d-flex flex-row align-items-start">
+  <div class="twoot-profile-picture mr-4"></div>
+  <div class="row d-flex flex-column w-100">
+    <div class="twoot-top d-flex flex-row w-100">
+      <div
+        class="twoot-user"
+        [routerLink]="['/' + twootContent.username]"
+        routerLinkActive="router-link-active"
+      >
+        {{ twootContent.first_name + ' ' + twootContent.last_name }}
+      </div>
+      <div class="twoot-username">{{ '@' + twootContent.username }}</div>
+      <div class="twoot-time">{{ '·  ' + twootContent.createdAt }}</div>
+    </div>
+    <div class="twoot-bot">
+      <div class="twoot-content">{{ twootContent.content }}</div>
+      <div class="twoot-options d-flex justify-content-around w-100">
+        <div class="respond">
+          <i class="Icon Icon--conversation"></i>
+        </div>
+        <div class="retweet">
+          <i class="Icon Icon--retweet"></i>
+        </div>
+        <div class="fav">
+          <i class="Icon Icon--heart"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

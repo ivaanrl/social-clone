@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
-import { Twoot } from './twoot.model';
 
 export interface TwootContent {
   content: string;
@@ -10,22 +9,20 @@ export interface TwootContent {
 
 @Injectable({ providedIn: 'root' })
 export class TwootService {
-  twoot = new BehaviorSubject<Twoot>(null);
   twootUrl = 'http://localhost:5000/api/twoot';
+
   constructor(private http: HttpClient) {}
 
   createTwoot(content: string) {
     if (content === '') {
       return;
     }
-    return this.http
-      .post<Twoot>(this.twootUrl, { content: content })
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          return resData;
-        })
-      );
+    return this.http.post(this.twootUrl, { content: content }).pipe(
+      catchError(this.handleError),
+      tap(resData => {
+        return resData;
+      })
+    );
   }
 
   getTwoots() {
@@ -35,6 +32,21 @@ export class TwootService {
         return resData;
       })
     );
+  }
+
+  getTimeDifference(twootTime: string) {
+    let dateTwoot: number | string =
+      (Date.now() - Date.parse(twootTime)) / 1000 / 60;
+    if (dateTwoot > 60) {
+      dateTwoot /= 60;
+      dateTwoot = Math.floor(dateTwoot);
+
+      dateTwoot = `${dateTwoot}h`;
+    } else {
+      dateTwoot = Math.floor(dateTwoot);
+      dateTwoot = `${dateTwoot}m`;
+    }
+    return dateTwoot;
   }
 
   private handleError(errorRes: HttpErrorResponse) {

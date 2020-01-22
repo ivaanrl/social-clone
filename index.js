@@ -6,6 +6,7 @@ const session = require('express-session');
 const User = require('./models/user');
 const Twoots = require('./models/twoot');
 const Favs = require('./models/fav');
+const Follows = require('./models/follows');
 
 require('./services/passport');
 
@@ -17,8 +18,7 @@ sequelize
 User.sync();
 Twoots.sync();
 Favs.sync();
-
-const options = {};
+Follows.sync();
 
 const app = express();
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TwootService } from '../shared/twoot.service';
-import { Observable } from 'rxjs';
-import { TwootContent } from '../shared/twoot.service';
+import { Twoot } from '../shared/twoot.interface';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +13,8 @@ export class HomeComponent implements OnInit {
   progressWidth: number = 0;
   constructor(private twootService: TwootService) {}
   error: string = null;
+  twootsArray: Twoot[] = [];
+  hey = 'hey!';
 
   ngOnInit() {
     this.getProgressWidth();
@@ -20,12 +22,13 @@ export class HomeComponent implements OnInit {
   }
 
   async createTwoot() {
-    let twootObs: Observable<TwootContent>;
+    let twootObs: any;
     this.progressWidth = 25;
     this.getProgressWidth();
     twootObs = this.twootService.createTwoot(this.twootContent);
     twootObs.subscribe(
-      resData => {
+      async resData => {
+        await this.getTwoots();
         this.progressWidth = 100;
       },
       errorMessage => {
@@ -48,12 +51,18 @@ export class HomeComponent implements OnInit {
     }, 900);
   }
 
-  getTwoots() {
-    let twootObs: any;
+  async getTwoots() {
+    let twootObs: any; //DEFINE TYPES FOR ALL OF THIS
+
     twootObs = this.twootService.getTwoots();
     twootObs.subscribe(
-      resData => {
-        console.log(resData);
+      (twootsArray: Twoot[]) => {
+        twootsArray.forEach(twoot => {
+          twoot.createdAt = this.twootService.getTimeDifference(
+            twoot.createdAt
+          );
+        });
+        this.twootsArray = twootsArray;
       },
       errorMessage => {
         this.error = errorMessage;

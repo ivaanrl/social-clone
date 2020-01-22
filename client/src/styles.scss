@@ -3,6 +3,11 @@
   font-family: 'edgeicons';
   src: url('assets/fonts/edge-icons-Regular.woff');
 }*/
+html,
+body {
+  min-height: 100vh;
+}
+
 $main-color: #1da1f2;
 $line-color: #e1e6eb;
 .btn-lightblue {
