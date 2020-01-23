@@ -24,8 +24,8 @@
       <button
         class="btn "
         [ngClass]="getButtonClass()"
-        (mouseenter)="changeButton()"
-        (mouseleave)="changeButton()"
+        (mouseenter)="changeButton('entering')"
+        (mouseleave)="changeButton('exiting')"
         (click)="profileButtonClick()"
       >
         {{ buttonText }}

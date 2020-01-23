@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit {
   buttonText: string = null;
   profileInfo: string[];
   btnFollow: boolean = true;
+  following: boolean = false;
 
   constructor(
     private profileService: ProfileService,
@@ -34,13 +35,27 @@ export class ProfileComponent implements OnInit {
     if (this.username === this.router.url.substr(1)) {
       this.buttonText = 'Edit profile';
     } else {
-      if (this.isFollowing(this.username, this.router.url.substr(1))) {
-        this.buttonText = 'Following';
-        this.btnFollow = false;
-        console.log('ups');
-      } else {
-        this.buttonText = 'Follow';
-      }
+      let followCheckObs = this.isFollowing(
+        this.username,
+        this.router.url.substr(1)
+      );
+      followCheckObs.subscribe(isFollowing => {
+        if (isFollowing) {
+          this.buttonText = 'Following';
+          this.btnFollow = false;
+          this.following = true;
+        } else {
+          this.buttonText = 'Follow';
+          this.following = false;
+        }
+      });
+      //if (this.isFollowing(this.username, this.router.url.substr(1))) {
+      //  this.buttonText = 'Following';
+      //  this.btnFollow = false;
+      //  console.log('ups');
+      //} else {
+      //  this.buttonText = 'Follow';
+      //}
     }
   }
 
@@ -51,12 +66,13 @@ export class ProfileComponent implements OnInit {
     return 'btn-lightblue';
   }
 
-  changeButton() {
-    if (!this.btnFollow) {
-      if (this.buttonText === 'Unfollow') {
-        this.buttonText = 'Following';
-      } else {
+  changeButton(action: string) {
+    if (this.following) {
+      if (action === 'entering') {
         this.buttonText = 'Unfollow';
+      }
+      if (action === 'exiting') {
+        this.buttonText = 'Following';
       }
     }
   }
@@ -112,6 +128,7 @@ export class ProfileComponent implements OnInit {
     followObs.subscribe(resData => {
       this.btnFollow = false;
       this.buttonText = 'Following';
+      this.following = true;
     });
   }
 
@@ -124,6 +141,7 @@ export class ProfileComponent implements OnInit {
     unfollowObs.subscribe(resData => {
       this.btnFollow = true;
       this.buttonText = 'Follow';
+      this.following = false;
     });
   }
 

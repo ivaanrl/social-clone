@@ -3,6 +3,8 @@ const Sequelize = require('sequelize');
 const Twoot = require('./twoot');
 const Favs = require('./fav');
 const Follows = require('./follows');
+const Notifications = require('./notifications');
+const Messages = require('./messages');
 
 module.exports = User = sequelize.define('user', {
   id: {
@@ -53,3 +55,6 @@ Fav.belongsTo(User, { foreignKey: 'user_id' });
 Fav.belongsTo(Twoot, { foreignKey: 'twoot_id' });
 User.hasMany(Follows, { as: 'Followers', foreignKey: 'follower_id' });
 User.hasMany(Follows, { as: 'Following', foreignKey: 'user_id' });
+User.hasMany(Notifications, { foreignKey: 'user_id' });
+User.hasMany(Messages, { as: 'Sent_messages', foreignKey: 'from_id' });
+User.hasMany(Messages, { as: 'Received_messages', foreignKey: 'to_id' });

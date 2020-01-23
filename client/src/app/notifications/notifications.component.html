@@ -1,0 +1,8 @@
+<nav class="navbar sticky-top navbar-light bg-light w-100">
+  <a class="navbar-brand">Notifications</a>
+</nav>
+<div class="notification-container" *ngFor="let notification of notifications">
+  <div class="notification" (click)="router.navigate(['/ivanrl'])">
+    {{ notification.content }}
+  </div>
+</div>

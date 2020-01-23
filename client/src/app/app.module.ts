@@ -11,6 +11,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { TwootComponent } from './twoot/twoot.component';
+import { MessagesComponent } from './messages/messages.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { ExploreComponent } from './explore/explore.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { TwootComponent } from './twoot/twoot.component';
     NavbarComponent,
     SignupComponent,
     ProfileComponent,
-    TwootComponent
+    TwootComponent,
+    MessagesComponent,
+    NotificationsComponent,
+    ExploreComponent
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [],

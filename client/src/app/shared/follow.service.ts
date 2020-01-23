@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { NotificationService } from './notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class FollowService {
@@ -9,7 +10,10 @@ export class FollowService {
   followUrl = 'http://localhost:5000/api/followers/follow';
   unfollowUrl = 'http://localhost:5000/api/followers/unfollow';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService
+  ) {}
 
   isFollowing(follower: string, following: string) {
     return this.http.post(this.followCheckUrl, { follower, following }).pipe(
@@ -24,6 +28,7 @@ export class FollowService {
     return this.http.post(this.followUrl, { follower, following }).pipe(
       catchError(this.handleError),
       tap(resData => {
+        this.notificationService.sendNotification(follower, following);
         return resData;
       })
     );

@@ -37,11 +37,15 @@ export class TwootService {
   getTimeDifference(twootTime: string) {
     let dateTwoot: number | string =
       (Date.now() - Date.parse(twootTime)) / 1000 / 60;
-    if (dateTwoot > 60) {
+    if (dateTwoot > 60 && dateTwoot < 1440) {
       dateTwoot /= 60;
       dateTwoot = Math.floor(dateTwoot);
 
       dateTwoot = `${dateTwoot}h`;
+    } else if (dateTwoot > 1440) {
+      dateTwoot /= 1440;
+      dateTwoot = Math.floor(dateTwoot);
+      dateTwoot = `${dateTwoot}d`;
     } else {
       dateTwoot = Math.floor(dateTwoot);
       dateTwoot = `${dateTwoot}m`;

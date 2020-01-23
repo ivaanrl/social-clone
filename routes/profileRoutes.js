@@ -1,4 +1,3 @@
-const uuid = require('uuid');
 const sequelize = require('../config/postgres.config');
 
 module.exports = app => {

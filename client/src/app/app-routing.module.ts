@@ -5,6 +5,8 @@ import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth/auth.guard';
 import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { MessagesComponent } from './messages/messages.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,8 @@ const routes: Routes = [
     path: 'auth',
     component: AuthComponent
   },
+  { path: 'notifications', component: NotificationsComponent },
+  { path: 'messages', component: MessagesComponent },
   {
     path: ':user',
     component: ProfileComponent

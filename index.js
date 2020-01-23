@@ -7,6 +7,8 @@ const User = require('./models/user');
 const Twoots = require('./models/twoot');
 const Favs = require('./models/fav');
 const Follows = require('./models/follows');
+const Messages = require('./models/messages');
+const Notifications = require('./models/notifications');
 
 require('./services/passport');
 
@@ -19,6 +21,8 @@ User.sync();
 Twoots.sync();
 Favs.sync();
 Follows.sync();
+Notifications.sync();
+Messages.sync();
 
 const app = express();
 
@@ -43,7 +47,7 @@ require('./routes/authRoutes')(app);
 require('./routes/twootRoutes')(app);
 require('./routes/profileRoutes')(app);
 require('./routes/followRoutes')(app);
-
+require('./routes/notificationRoutes')(app);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT);
