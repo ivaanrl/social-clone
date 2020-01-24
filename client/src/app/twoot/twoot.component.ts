@@ -17,6 +17,7 @@ export class TwootComponent implements OnInit {
     user_id: string;
     createdAt: string;
     content: string;
+    profile_img_name: string;
   };
   userFav = false;
   img = null;
@@ -51,9 +52,10 @@ export class TwootComponent implements OnInit {
   }
 
   getImg() {
-    console.log(
-      `/api/twoots/getTwootImage/${this.twootContent.user_id}/${this.twootContent.img_name}`
-    );
     return `http://localhost:5000/api/twoots/getTwootImage/${this.twootContent.user_id}/${this.twootContent.img_name}`;
+  }
+
+  getProfileImg() {
+    return `http://localhost:5000/api/profile/getProfilePicture/${this.twootContent.user_id}/${this.twootContent.profile_img_name}`;
   }
 }

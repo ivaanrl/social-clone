@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(private twootService: TwootService) {}
   error: string = null;
   twootsArray: Twoot[] = [];
-  image: ImageData;
+  image: ImageData = null;
 
   ngOnInit() {
     this.getProgressWidth();

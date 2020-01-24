@@ -7,6 +7,7 @@ import { throwError } from 'rxjs';
 export class ProfileService {
   userTwootsUrl = 'http://localhost:5000/api/userTwoots';
   profileInfoUrl = 'http://localhost:5000/api/profile/basicInfo';
+  saveProfileChangesUrl = 'http://localhost:5000/api/profile/saveChanges';
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +22,18 @@ export class ProfileService {
 
   getProfileInfo(username: string) {
     return this.http.post(this.profileInfoUrl, { username }).pipe(
+      catchError(this.handleError),
+      tap(resData => {
+        return resData;
+      })
+    );
+  }
+
+  saveProfileChanges(profilePic, coverPic) {
+    const formData = new FormData();
+    formData.append('profilepic', profilePic);
+    formData.append('coverpic', coverPic);
+    return this.http.post(this.saveProfileChangesUrl, formData).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;

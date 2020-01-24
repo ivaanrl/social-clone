@@ -5,7 +5,6 @@ const uuid = require('uuid');
 const { Op } = require('sequelize');
 
 passport.serializeUser(function(user, done) {
-  console.log(user);
   done(null, user.dataValues.id);
 });
 

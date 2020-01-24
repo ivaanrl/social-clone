@@ -16,10 +16,22 @@ export class ProfileComponent implements OnInit {
   twootsArray: Twoot[] = [];
   username: string = null;
   buttonText: string = null;
-  profileInfo: string[];
+  profileInfo: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    about: string | null;
+    createdAt: string;
+    profile_img_name: string;
+    cover_pic_name: string;
+    twoot_count: string;
+  };
   btnFollow: boolean = true;
   following: boolean = false;
   toggleModal = '';
+  profilePic: ImageData = null;
+  coverPic: ImageData = null;
 
   constructor(
     private profileService: ProfileService,
@@ -95,17 +107,28 @@ export class ProfileComponent implements OnInit {
     let profileObs = this.profileService.getProfileInfo(
       this.router.url.substr(1)
     );
-    profileObs.subscribe((profileInfo: string[]) => {
-      this.profileInfo = profileInfo;
-      console.log(this.profileInfo);
-    });
+    profileObs.subscribe(
+      (profileInfo: {
+        id: string;
+        first_name: string;
+        last_name: string;
+        email: string;
+        about: string | null;
+        createdAt: string;
+        profile_img_name: string;
+        cover_pic_name: string;
+        twoot_count: string;
+      }) => {
+        this.profileInfo = profileInfo;
+        console.log(this.profileInfo);
+      }
+    );
   }
 
   profileButtonClick() {
     console.log(this.btnFollow);
     if (this.btnFollow) {
       if (this.buttonText === 'Edit profile') {
-        this.showEditProfile();
         return;
       }
       this.follow();
@@ -114,8 +137,6 @@ export class ProfileComponent implements OnInit {
     }
     this.unfollow();
   }
-
-  showEditProfile() {}
 
   follow() {
     let followObs = this.followService.follow(
@@ -144,5 +165,31 @@ export class ProfileComponent implements OnInit {
 
   isFollowing(follower: string, following: string) {
     return this.followService.isFollowing(follower, following);
+  }
+
+  selectImage(event) {
+    if (event.target.classList[0] === 'input-profile-picture') {
+      this.profilePic = event.target.files[0];
+    } else {
+      this.coverPic = event.target.files[0];
+    }
+  }
+
+  saveProfileChanges() {
+    let profileSub = this.profileService.saveProfileChanges(
+      this.profilePic,
+      this.coverPic
+    );
+    profileSub.subscribe(resData => {
+      //this.getProfileImg();
+    });
+  }
+
+  getProfileImg() {
+    return `http://localhost:5000/api/profile/getProfilePicture/${this.profileInfo.id}/${this.profileInfo.profile_img_name}`;
+  }
+
+  getCoverImg() {
+    return `http://localhost:5000/api/profile/getProfilePicture/${this.profileInfo.id}/${this.profileInfo.cover_pic_name}`;
   }
 }

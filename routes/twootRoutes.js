@@ -35,7 +35,6 @@ module.exports = app => {
   app.post('/api/twoot', upload.single('file'), async (req, res, next) => {
     const id = uuid();
     const file = req.file;
-    console.log(req.body);
     try {
       let img_name = null;
       if (file) {
@@ -56,7 +55,7 @@ module.exports = app => {
   app.get('/api/twoot', async (req, res) => {
     try {
       const twoots = await sequelize.query(
-        'SELECT first_name, last_name, content, twoots."createdAt", username, twoots.id AS twoot_id, users.id AS user_id, img_name FROM twoots INNER JOIN users ON twoots.author_id = users.id ORDER BY twoots."createdAt" DESC '
+        'SELECT first_name, last_name, content, twoots."createdAt", username, twoots.id AS twoot_id, users.id AS user_id, img_name, users.profile_pic_name AS profile_img_name FROM twoots  INNER JOIN users ON twoots.author_id = users.id ORDER BY twoots."createdAt" DESC '
       );
 
       res.json(twoots[0]);
@@ -68,7 +67,7 @@ module.exports = app => {
   app.post('/api/userTwoots', async (req, res) => {
     try {
       const userTwoots = await sequelize.query(
-        `SELECT first_name, last_name, content, twoots."createdAt", twoots.id AS twoot_id , users.id AS user_id, img_name, username FROM twoots INNER JOIN users on twoots.author_id = users.id WHERE username='${req.body.username}' ORDER BY twoots."createdAt" DESC`
+        `SELECT first_name, last_name, content, twoots."createdAt", twoots.id AS twoot_id , users.id AS user_id, img_name, username, users.profile_pic_name AS profile_img_name FROM twoots INNER JOIN users on twoots.author_id = users.id WHERE username='${req.body.username}' ORDER BY twoots."createdAt" DESC`
       );
       res.json(userTwoots[0]);
     } catch (error) {

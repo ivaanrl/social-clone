@@ -12,8 +12,18 @@
       </div>
     </div>
   </div>
-  <div class="big-photo"></div>
-  <div class="profile-picture"></div>
+  <div class="big-photo" *ngIf="!profileInfo.cover_pic_name"></div>
+  <img
+    *ngIf="profileInfo.cover_pic_name"
+    class="big-photo"
+    [src]="getCoverImg()"
+  />
+  <div class="profile-picture" *ngIf="!profileInfo.profile_img_name"></div>
+  <img
+    *ngIf="profileInfo.profile_img_name"
+    class="profile-picture"
+    [src]="getProfileImg()"
+  />
   <div
     class="button-container d-flex flex-row align-items-center justify-content-end mb-2"
   >
@@ -76,13 +86,44 @@
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <div class="row mb-5">
+          <label for="uploadProfilePic" class="cursor-pointer mr-4 ml-2">
+            Select profile picture
+          </label>
+          <input
+            #uploadFile
+            type="file"
+            id="uploadProfilePìc"
+            class="input-profile-picture "
+            accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg, .docx, .pdf"
+            (change)="selectImage($event)"
+          />
+        </div>
+        <div class="row mt-3">
+          <label for="uploadCoverPic" class="cursor-pointer mr-4 ml-2">
+            Select cover picture
+          </label>
+          <input
+            #uploadFile
+            type="file"
+            id="uploadCoverPic"
+            class="input-cover-picture ml-1"
+            accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg, .docx, .pdf"
+            (change)="selectImage($event)"
+          />
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="saveProfileChanges()"
+        >
+          Save changes
+        </button>
       </div>
     </div>
   </div>

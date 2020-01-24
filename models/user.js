@@ -34,6 +34,12 @@ module.exports = User = sequelize.define('user', {
   location: {
     type: Sequelize.STRING
   },
+  profile_pic_name: {
+    type: Sequelize.STRING
+  },
+  cover_pic_name: {
+    type: Sequelize.STRING
+  },
   createdAt: {
     type: Sequelize.DATE
   },

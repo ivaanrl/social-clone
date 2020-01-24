@@ -12,7 +12,6 @@ export class TwootService {
   twootUrl = 'http://localhost:5000/api/twoot';
   favUrl = 'http://localhost:5000/api/twoot/fav';
   getFavUrl = 'http://localhost:5000/api/twoot/getFav';
-  getTwootImgUrl = 'http://localhost:5000/api/twoots/getTwootImage/';
 
   constructor(private http: HttpClient) {}
 
@@ -78,18 +77,6 @@ export class TwootService {
       })
     );
   }
-
-  //getTwootImg(img_name: string, user_id: string) {
-  //  return this.http
-  //    .post(this.getTwootImgUrl + `${img_name}`, { user_id })
-  //    .pipe(
-  //      catchError(this.handleError),
-  //      tap(resData => {
-  //        console.log(resData);
-  //        return resData;
-  //      })
-  //    );
-  //}
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = errorRes;

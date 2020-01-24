@@ -4,4 +4,5 @@ module.exports = sequelize = new Sequelize({
   username: 'ivan',
   password: '73442332',
   dialect: 'postgres'
+  //logging: false
 });
