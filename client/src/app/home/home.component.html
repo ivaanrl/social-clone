@@ -24,8 +24,19 @@
   </div>
 
   <div class="d-flex flex-row justify-content-between ml-5 mt-3">
-    <div class="image-upload-icon ml-1">
-      <i class="Icon Icon--camera"></i>
+    <div class="image-upload-icon cursor-pointer ml-1">
+      <input
+        #uploadFile
+        type="file"
+        id="uploadFile"
+        class="d-none "
+        accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg, .docx, .pdf"
+        (change)="selectImage($event)"
+      />
+
+      <label for="uploadFile" class="cursor-pointer">
+        <i class="Icon Icon--camera "></i>
+      </label>
     </div>
     <div class="btn-container ">
       <button

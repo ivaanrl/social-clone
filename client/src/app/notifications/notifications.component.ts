@@ -24,4 +24,10 @@ export class NotificationsComponent implements OnInit {
       this.notifications = notificationsArray;
     });
   }
+
+  navigateToProfile(notificationContent: string) {
+    console.log(notificationContent);
+    let username = notificationContent.split(' ');
+    this.router.navigate([`/${username[1]}`]);
+  }
 }

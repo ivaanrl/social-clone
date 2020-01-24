@@ -20,7 +20,7 @@ module.exports = app => {
   app.post('/api/notifications/getNotifications', async (req, res) => {
     try {
       const notifications = await sequelize.query(
-        `SELECT * FROM notifications WHERE user_id= (SELECT id FROM users WHERE username='${req.body.username}') ORDER BY "createdAt"`
+        `SELECT * FROM notifications WHERE user_id= (SELECT id FROM users WHERE username='${req.body.username}') ORDER BY "createdAt" DESC`
       );
       res.json(notifications[0]);
     } catch (error) {

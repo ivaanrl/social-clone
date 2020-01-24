@@ -1,9 +1,20 @@
 const sequelize = require('../config/postgres.config');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, 'uploads');
+  },
+  filename: (req, file, callback) => {
+    callback(null, `profilePicture_${file.originalname}`);
+  }
+});
+
+const upload = multer({ storage });
 
 module.exports = app => {
   app.post('/api/profile/basicInfo', async (req, res) => {
     try {
-      console.log('lel');
       const profileInfo = await sequelize.query(
         `SELECT first_name,last_name,email,about, users."createdAt", COUNT(*) as twoot_count 
          FROM users 
@@ -17,4 +28,19 @@ module.exports = app => {
       res.json(error);
     }
   });
+
+  app.post(
+    '/api/profile/uploadProfilePicture',
+    upload.single('file'),
+    (req, res, next) => {
+      const file = req.file;
+      console.log(file.filename);
+      if (!file) {
+        const error = new Error('Please upload a file');
+        error.httpStatusCode = 400;
+        return next(error);
+      }
+      res.send(file);
+    }
+  );
 };

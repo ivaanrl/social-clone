@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(private twootService: TwootService) {}
   error: string = null;
   twootsArray: Twoot[] = [];
-  hey = 'hey!';
+  image: ImageData;
 
   ngOnInit() {
     this.getProgressWidth();
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
     let twootObs: any;
     this.progressWidth = 25;
     this.getProgressWidth();
-    twootObs = this.twootService.createTwoot(this.twootContent);
+    twootObs = this.twootService.createTwoot(this.twootContent, this.image);
     twootObs.subscribe(
       async resData => {
         await this.getTwoots();
@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
       }
     );
     await this.resetTwootForm();
+    this.image = null;
   }
 
   getProgressWidth() {
@@ -68,5 +69,12 @@ export class HomeComponent implements OnInit {
         this.error = errorMessage;
       }
     );
+  }
+
+  selectImage(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.image = file;
+    }
   }
 }

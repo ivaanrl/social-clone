@@ -14,6 +14,9 @@
     </div>
     <div class="twoot-bot">
       <div class="twoot-content">{{ twootContent.content }}</div>
+      <div class="twoot-image-container" *ngIf="twootContent.img_name">
+        <img class="twoot-image" [src]="getImg()" />
+      </div>
       <div class="twoot-options d-flex justify-content-around w-100">
         <div class="respond">
           <i class="Icon Icon--conversation"></i>
@@ -21,8 +24,11 @@
         <div class="retweet">
           <i class="Icon Icon--retweet"></i>
         </div>
-        <div class="fav">
-          <i class="Icon Icon--heart"></i>
+        <div class="fav fav-fill" (click)="sendFav()">
+          <i
+            class="Icon"
+            [ngClass]="userFav ? 'Icon--heartBadge' : 'Icon--heart'"
+          ></i>
         </div>
       </div>
     </div>

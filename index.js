@@ -26,6 +26,7 @@ Messages.sync();
 
 const app = express();
 
+//app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 
@@ -41,7 +42,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-//app.use(express.urlencoded({ extended: false }));
 
 require('./routes/authRoutes')(app);
 require('./routes/twootRoutes')(app);

@@ -2,7 +2,15 @@
   <a class="navbar-brand">Notifications</a>
 </nav>
 <div class="notification-container" *ngFor="let notification of notifications">
-  <div class="notification" (click)="router.navigate(['/ivanrl'])">
-    {{ notification.content }}
+  <div
+    class="notification d-flex flex-row align-items-center pt-4 pb-4"
+    (click)="navigateToProfile(notification.content)"
+  >
+    <div class="notification-icon mr-4 ml-3">
+      <i class="Icon Icon--circleReply"></i>
+    </div>
+    <div class="notification-content">
+      {{ notification.content }}
+    </div>
   </div>
 </div>

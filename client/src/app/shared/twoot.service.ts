@@ -10,14 +10,22 @@ export interface TwootContent {
 @Injectable({ providedIn: 'root' })
 export class TwootService {
   twootUrl = 'http://localhost:5000/api/twoot';
+  favUrl = 'http://localhost:5000/api/twoot/fav';
+  getFavUrl = 'http://localhost:5000/api/twoot/getFav';
+  getTwootImgUrl = 'http://localhost:5000/api/twoots/getTwootImage/';
 
   constructor(private http: HttpClient) {}
 
-  createTwoot(content: string) {
+  createTwoot(content: string, image) {
+    const formData = new FormData();
+    formData.append('date', Date.now().toString());
+    formData.append('content', content);
+    formData.append('file', image);
     if (content === '') {
       return;
     }
-    return this.http.post(this.twootUrl, { content: content }).pipe(
+
+    return this.http.post(this.twootUrl, formData).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;
@@ -52,6 +60,36 @@ export class TwootService {
     }
     return dateTwoot;
   }
+
+  favClick(twoot_id: string, username: string) {
+    return this.http.post(this.favUrl, { twoot_id, username }).pipe(
+      catchError(this.handleError),
+      tap(resData => {
+        return resData;
+      })
+    );
+  }
+
+  getFav(twoot_id: string, username: string) {
+    return this.http.post(this.getFavUrl, { twoot_id, username }).pipe(
+      catchError(this.handleError),
+      tap(resData => {
+        return resData;
+      })
+    );
+  }
+
+  //getTwootImg(img_name: string, user_id: string) {
+  //  return this.http
+  //    .post(this.getTwootImgUrl + `${img_name}`, { user_id })
+  //    .pipe(
+  //      catchError(this.handleError),
+  //      tap(resData => {
+  //        console.log(resData);
+  //        return resData;
+  //      })
+  //    );
+  //}
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = errorRes;

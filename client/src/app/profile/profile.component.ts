@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit {
   profileInfo: string[];
   btnFollow: boolean = true;
   following: boolean = false;
+  toggleModal = '';
 
   constructor(
     private profileService: ProfileService,
@@ -34,6 +35,7 @@ export class ProfileComponent implements OnInit {
     this.username = this.authService.user.value.getUsername;
     if (this.username === this.router.url.substr(1)) {
       this.buttonText = 'Edit profile';
+      this.toggleModal = 'editProfileModal';
     } else {
       let followCheckObs = this.isFollowing(
         this.username,
@@ -44,18 +46,13 @@ export class ProfileComponent implements OnInit {
           this.buttonText = 'Following';
           this.btnFollow = false;
           this.following = true;
+          this.toggleModal = '';
         } else {
           this.buttonText = 'Follow';
           this.following = false;
+          this.toggleModal = '';
         }
       });
-      //if (this.isFollowing(this.username, this.router.url.substr(1))) {
-      //  this.buttonText = 'Following';
-      //  this.btnFollow = false;
-      //  console.log('ups');
-      //} else {
-      //  this.buttonText = 'Follow';
-      //}
     }
   }
 
