@@ -1,1 +1,10 @@
-<p>explore works!</p>
+<nav class="navbar navbar-light bg-light w-100">
+  <a class="navbar-brand">Explore</a>
+</nav>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+<div style="width: 600px;" *ngIf="!isLoading">
+  <app-twoot
+    *ngFor="let twoot of twootsArray"
+    [twootContent]="twoot"
+  ></app-twoot>
+</div>

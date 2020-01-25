@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.getProgressWidth();
     this.getTwoots();
-    console.log(this.authService.user);
   }
 
   async createTwoot() {
@@ -58,9 +57,7 @@ export class HomeComponent implements OnInit {
   }
 
   async getTwoots() {
-    let twootObs: any; //DEFINE TYPES FOR ALL OF THIS
-
-    twootObs = this.twootService.getTwoots();
+    let twootObs = this.twootService.getTwoots();
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {

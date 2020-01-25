@@ -7,6 +7,7 @@ import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { MessagesComponent } from './messages/messages.component';
+import { ExploreComponent } from './explore/explore.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,11 @@ const routes: Routes = [
   {
     path: 'auth',
     component: AuthComponent
+  },
+  {
+    path: 'explore',
+    component: ExploreComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'notifications',

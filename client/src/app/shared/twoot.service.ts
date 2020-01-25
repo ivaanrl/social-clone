@@ -12,6 +12,7 @@ export class TwootService {
   twootUrl = 'http://localhost:5000/api/twoot';
   favUrl = 'http://localhost:5000/api/twoot/fav';
   getFavUrl = 'http://localhost:5000/api/twoot/getFav';
+  exploreTwootUrl = 'http://localhost:5000/api/twoot/exploreTwoot';
 
   constructor(private http: HttpClient) {}
 
@@ -34,6 +35,15 @@ export class TwootService {
 
   getTwoots() {
     return this.http.get(this.twootUrl).pipe(
+      catchError(this.handleError),
+      tap(resData => {
+        return resData;
+      })
+    );
+  }
+
+  getExploreTwoots() {
+    return this.http.get(this.exploreTwootUrl).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;
@@ -80,7 +90,6 @@ export class TwootService {
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = errorRes;
-    console.log(errorMessage);
     return throwError(errorMessage);
   }
 }

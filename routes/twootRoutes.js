@@ -71,6 +71,26 @@ module.exports = app => {
     }
   });
 
+  app.get('/api/twoot/exploreTwoot', async (req, res) => {
+    try {
+      const twoots = await sequelize.query(`
+      SELECT first_name, last_name, content, twoots."createdAt",
+      username, twoots.id AS twoot_id, users.id AS user_id, img_name, users.profile_pic_name AS profile_img_name
+      FROM twoots
+      INNER JOIN users ON users.id = twoots.author_id
+      INNER JOIN follows ON users.id = user_id
+      WHERE follows.user_id NOT IN (SELECT follower_id FROM follows
+              WHERE user_id = '${req.session.user}')
+          
+      ORDER BY twoots."createdAt" DESC
+      LIMIT 10
+      `);
+      res.json(twoots[0]);
+    } catch (error) {
+      res.json(error);
+    }
+  });
+
   app.post('/api/userTwoots', async (req, res) => {
     try {
       const userTwoots = await sequelize.query(

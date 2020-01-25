@@ -84,7 +84,6 @@ export class AuthService {
   }
 
   handleAuthentication(data: any) {
-    console.log(data);
     const user = new User(
       data.email,
       data.id,
