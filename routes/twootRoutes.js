@@ -55,7 +55,14 @@ module.exports = app => {
   app.get('/api/twoot', async (req, res) => {
     try {
       const twoots = await sequelize.query(
-        'SELECT first_name, last_name, content, twoots."createdAt", username, twoots.id AS twoot_id, users.id AS user_id, img_name, users.profile_pic_name AS profile_img_name FROM twoots  INNER JOIN users ON twoots.author_id = users.id ORDER BY twoots."createdAt" DESC '
+        `SELECT first_name, last_name, content, twoots."createdAt",
+        username, twoots.id AS twoot_id, users.id AS user_id, img_name, users.profile_pic_name AS profile_img_name
+        FROM twoots  
+        INNER JOIN users ON twoots.author_id = users.id 
+        INNER JOIN follows ON follows.user_id = users.id
+        WHERE follows.user_id IN (SELECT follower_id FROM follows
+        WHERE user_id = '${req.session.user}')
+        ORDER BY twoots."createdAt" DESC `
       );
 
       res.json(twoots[0]);

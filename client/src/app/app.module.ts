@@ -14,6 +14,7 @@ import { TwootComponent } from './twoot/twoot.component';
 import { MessagesComponent } from './messages/messages.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ExploreComponent } from './explore/explore.component';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ExploreComponent } from './explore/explore.component';
     TwootComponent,
     MessagesComponent,
     NotificationsComponent,
-    ExploreComponent
+    ExploreComponent,
+    LoadingSpinnerComponent
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [],

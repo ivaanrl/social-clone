@@ -1,6 +1,7 @@
-<nav class="navbar sticky-top navbar-light bg-light w-100">
+<nav class="navbar navbar-light bg-light w-100">
   <a class="navbar-brand">Home</a>
 </nav>
+
 <div class="progress" style="height: 3px;">
   <div
     class="progress-bar"
@@ -13,7 +14,15 @@
 </div>
 <div class=" d-flex flex-column twoot-component w-100 mb-2">
   <div class="d-flex flex-row">
-    <div class="profile-picture-twoot mr-3"></div>
+    <div
+      class="profile-picture-twoot mr-3"
+      *ngIf="!authService.user.value.getProfilePicName"
+    ></div>
+    <img
+      class="profile-picture-twoot mr-3"
+      [src]="getProfileImage()"
+      *ngIf="authService.user.value.getProfilePicName"
+    />
     <input
       type="text"
       name="twootContent"
@@ -49,7 +58,8 @@
     </div>
   </div>
 </div>
-<div style="width: 600px;">
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+<div style="width: 600px;" *ngIf="!isLoading">
   <app-twoot
     *ngFor="let twoot of twootsArray"
     [twootContent]="twoot"

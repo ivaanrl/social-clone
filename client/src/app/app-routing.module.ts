@@ -23,11 +23,16 @@ const routes: Routes = [
     path: 'auth',
     component: AuthComponent
   },
-  { path: 'notifications', component: NotificationsComponent },
-  { path: 'messages', component: MessagesComponent },
+  {
+    path: 'notifications',
+    component: NotificationsComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard] },
   {
     path: ':user',
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

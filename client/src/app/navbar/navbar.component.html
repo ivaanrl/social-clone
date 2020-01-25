@@ -1,6 +1,6 @@
 <div class="sidebar-sticky">
   <ul class="nav flex-column ">
-    <li class="nav-item ">
+    <li class="nav-item " style="cursor: pointer;">
       <div class="icon-sidebar mr-2 ml-3">
         <i class="Icon Icon--bird"></i>
       </div>
@@ -10,6 +10,7 @@
         class="nav-link  d-flex flex-row align-items-center"
         [routerLink]="['/']"
         routerLinkActive="nav-link-active"
+        [routerLinkActiveOptions]="{ exact: true }"
       >
         <div class="icon-sidebar mr-2">
           <i class="Icon Icon--homeFilled"></i>
@@ -114,21 +115,15 @@
         </div>
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" (click)="logout()">
       <a class="nav-link  d-flex flex-row align-items-center">
         <div class="icon-sidebar mr-2">
-          <i class="Icon Icon--cog"></i>
+          <i class="Icon Icon--arrowLeft"></i>
         </div>
         <div class="d-none d-xl-block" style="font-weight: bold">
-          More
+          Log out
         </div>
       </a>
-    </li>
-    <li class="nav-item">
-      <button class="btn btn-lightblue d-none d-xl-block">Twoot</button>
-      <button class="btn btn-lightblue d-block d-xl-none">
-        <i class="Icon Icon--tweet"></i>
-      </button>
     </li>
   </ul>
 </div>

@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   twootsArray: Twoot[] = [];
   username: string = null;
   buttonText: string = null;
+  isLoading = true;
   profileInfo: {
     id: string;
     first_name: string;
@@ -95,6 +96,7 @@ export class ProfileComponent implements OnInit {
             twoot.createdAt
           );
         });
+        this.isLoading = false;
         this.twootsArray = twootsArray;
       },
       errorMessage => {

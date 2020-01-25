@@ -21,6 +21,7 @@ export class TwootComponent implements OnInit {
   };
   userFav = false;
   img = null;
+  isLoading = true;
 
   constructor(
     private twootService: TwootService,
@@ -33,6 +34,7 @@ export class TwootComponent implements OnInit {
       this.authService.user.value.getUsername
     );
     getFavSub.subscribe(isFaved => {
+      this.isLoading = false;
       if (isFaved) {
         this.userFav = true;
       } else {

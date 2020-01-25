@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TwootService } from '../shared/twoot.service';
 import { Twoot } from '../shared/twoot.interface';
-import { stringify } from 'querystring';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,14 +11,19 @@ import { stringify } from 'querystring';
 export class HomeComponent implements OnInit {
   twootContent: string = '';
   progressWidth: number = 0;
-  constructor(private twootService: TwootService) {}
+  constructor(
+    private twootService: TwootService,
+    private authService: AuthService
+  ) {}
   error: string = null;
   twootsArray: Twoot[] = [];
   image: ImageData = null;
+  isLoading = true;
 
   ngOnInit() {
     this.getProgressWidth();
     this.getTwoots();
+    console.log(this.authService.user);
   }
 
   async createTwoot() {
@@ -63,6 +68,7 @@ export class HomeComponent implements OnInit {
             twoot.createdAt
           );
         });
+        this.isLoading = false;
         this.twootsArray = twootsArray;
       },
       errorMessage => {
@@ -76,5 +82,9 @@ export class HomeComponent implements OnInit {
       const file = event.target.files[0];
       this.image = file;
     }
+  }
+
+  getProfileImage() {
+    return `http://localhost:5000/api/profile/getProfilePicture/${this.authService.user.value.getid}/${this.authService.user.value.getProfilePicName}`;
   }
 }

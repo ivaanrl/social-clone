@@ -56,14 +56,14 @@
     <div class="follow-info"></div>
   </div>
 </div>
-<div style="width: 600px;">
+<app-loading-spinner *ngIf="isLoading!"></app-loading-spinner>
+<div style="width: 600px;" ngif="!isLoading">
   <app-twoot
     *ngFor="let twoot of twootsArray"
     [twootContent]="twoot"
   ></app-twoot>
 </div>
 
-<!-- Modal -->
 <div
   class="modal fade"
   [id]="toggleModal"

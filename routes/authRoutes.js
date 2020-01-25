@@ -1,5 +1,7 @@
 const passport = require('passport');
+const sequelize = require('../config/postgres.config');
 require('../services/passport');
+const User = require('../models/user');
 
 module.exports = app => {
   app.get('/users', (req, res) => {
@@ -18,14 +20,19 @@ module.exports = app => {
   app.post(
     '/api/signin',
     passport.authenticate('local-signin'),
-    (req, res, next) => {
+    async (req, res, next) => {
       req.session.user = req.user.id;
-      const response = {
-        email: req.user.email,
-        username: req.user.username,
-        id: req.user.id
-      };
-      res.json(response);
+
+      const response = await sequelize.query(
+        `SELECT id, email, username, profile_pic_name FROM users WHERE id='${req.session.user}'`
+      );
+      console.log(response[0][0]);
+      //const response = {
+      //  email: req.user.email,
+      //  username: req.user.username,
+      //  id: req.user.id
+      //};
+      res.json(response[0][0]);
     }
   );
 

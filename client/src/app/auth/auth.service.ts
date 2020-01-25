@@ -73,13 +73,24 @@ export class AuthService {
     if (!userData) {
       return;
     }
-    const loadedUser = new User(userData.email, userData.id, userData.username);
+    const loadedUser = new User(
+      userData.email,
+      userData.id,
+      userData.username,
+      userData.profile_pic_name
+    );
     //NEED TO CHECK FOR TOKEN EXPIRATION DATE
     this.user.next(loadedUser);
   }
 
   handleAuthentication(data: any) {
-    const user = new User(data.email, data.id, data.username);
+    console.log(data);
+    const user = new User(
+      data.email,
+      data.id,
+      data.username,
+      data.profile_pic_name
+    );
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));
   }
