@@ -29,6 +29,7 @@
       placeholder="What's Happening?"
       class="twoot-input w-100"
       [(ngModel)]="twootContent"
+      (change)="formatTwoots()"
     />
   </div>
 

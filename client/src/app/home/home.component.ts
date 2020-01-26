@@ -74,6 +74,8 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  formatTwoots() {}
+
   selectImage(event) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];

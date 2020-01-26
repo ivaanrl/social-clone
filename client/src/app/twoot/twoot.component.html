@@ -21,7 +21,10 @@
       <div class="twoot-time">{{ '·  ' + twootContent.createdAt }}</div>
     </div>
     <div class="twoot-bot">
-      <div class="twoot-content">{{ twootContent.content }}</div>
+      <div
+        class="twoot-content"
+        [innerHtml]="twootContent.content | twootPipe: twootContent.username"
+      ></div>
 
       <div class="twoot-image-container" *ngIf="twootContent.img_name">
         <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

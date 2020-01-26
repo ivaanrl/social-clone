@@ -29,6 +29,7 @@ export class TwootComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log(this.twootContent);
     let getFavSub = this.twootService.getFav(
       this.twootContent.twoot_id,
       this.authService.user.value.getUsername
