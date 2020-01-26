@@ -9,51 +9,22 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  twootContent: string = '';
-  progressWidth: number = 0;
+  error: string = null;
+
   constructor(
     private twootService: TwootService,
     private authService: AuthService
   ) {}
-  error: string = null;
+
   twootsArray: Twoot[] = [];
-  image: ImageData = null;
+
   isLoading = true;
 
   ngOnInit() {
-    this.getProgressWidth();
     this.getTwoots();
-  }
-
-  async createTwoot() {
-    let twootObs: any;
-    this.progressWidth = 25;
-    this.getProgressWidth();
-    twootObs = this.twootService.createTwoot(this.twootContent, this.image);
-    twootObs.subscribe(
-      async resData => {
-        await this.getTwoots();
-        this.progressWidth = 100;
-      },
-      errorMessage => {
-        this.error = errorMessage;
-        this.progressWidth = 0;
-      }
-    );
-    await this.resetTwootForm();
-    this.image = null;
-  }
-
-  getProgressWidth() {
-    return `${this.progressWidth}%`;
-  }
-
-  async resetTwootForm() {
-    this.twootContent = '';
-    setTimeout(() => {
-      this.progressWidth = 0;
-      this.getProgressWidth();
-    }, 900);
+    this.twootService.NewTwootsEmitter.subscribe(async () => {
+      await this.getTwoots();
+    });
   }
 
   async getTwoots() {
@@ -75,15 +46,4 @@ export class HomeComponent implements OnInit {
   }
 
   formatTwoots() {}
-
-  selectImage(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.image = file;
-    }
-  }
-
-  getProfileImage() {
-    return `http://localhost:5000/api/profile/getProfilePicture/${this.authService.user.value.getid}/${this.authService.user.value.getProfilePicName}`;
-  }
 }

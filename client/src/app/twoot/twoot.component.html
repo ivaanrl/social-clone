@@ -23,7 +23,7 @@
     <div class="twoot-bot">
       <div
         class="twoot-content"
-        [innerHtml]="twootContent.content | twootPipe: twootContent.username"
+        [innerHtml]="twootContent.content | twootPipe"
       ></div>
 
       <div class="twoot-image-container" *ngIf="twootContent.img_name">
@@ -31,7 +31,7 @@
         <img class="twoot-image" [src]="getImg()" *ngIf="!isLoading" />
       </div>
       <div class="twoot-options d-flex justify-content-around w-100">
-        <div class="respond">
+        <div class="respond" data-toggle="modal" data-target="#twootReplyModal">
           <i class="Icon Icon--conversation"></i>
         </div>
         <div class="retweet">
@@ -43,6 +43,37 @@
             [ngClass]="userFav ? 'Icon--heartBadge' : 'Icon--heart'"
           ></i>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="twootReplyModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="twootReplyModalTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          Answer twoot
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-create-twoot [placeHolder]="'Reply...'"></app-create-twoot>
       </div>
     </div>
   </div>

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'client';
+  title = 'Twooter!';
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {

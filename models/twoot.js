@@ -17,6 +17,12 @@ module.exports = Twoot = sequelize.define('twoot', {
   img_name: {
     type: Sequelize.TEXT
   },
+  parent_twoot: {
+    type: Sequelize.STRING
+  },
+  child_twoots: {
+    type: Sequelize.STRING
+  },
   createdAt: {
     type: Sequelize.DATE
   }

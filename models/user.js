@@ -64,3 +64,5 @@ User.hasMany(Follows, { as: 'Following', foreignKey: 'user_id' });
 User.hasMany(Notifications, { foreignKey: 'user_id' });
 User.hasMany(Messages, { as: 'Sent_messages', foreignKey: 'from_id' });
 User.hasMany(Messages, { as: 'Received_messages', foreignKey: 'to_id' });
+Twoot.belongsTo(Twoot, { foreignKey: 'parent_twoot' });
+Twoot.hasMany(Twoot, { foreignKey: 'child_twoots' });

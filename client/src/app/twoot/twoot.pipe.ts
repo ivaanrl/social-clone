@@ -8,16 +8,35 @@ import { Twoot } from '../shared/twoot.interface';
 export class TwootPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
-  transform(twootContent: string, username: string): SafeHtml {
-    let text = this.sanitizer.sanitize(SecurityContext.HTML, twootContent);
-    let user = this.sanitizer.sanitize(SecurityContext.HTML, username);
-    text = text
-      .replace(
-        /(@[^ ]+)/g,
-        `<a class="user" href="${user}" target="blank_" >@${user}</a>`
-      )
-      .replace(/(#[^ ]+)/g, `<a class="hash" href="$1" target="blank_" >$1</a>`)
-      .replace(/\n/gm, '<br />');
-    return this.sanitizer.bypassSecurityTrustHtml(text);
+  regExpUsername: RegExp = /(@[^ ]+)/;
+  regExpHashtag: RegExp = /(#[^ ]+)/;
+
+  transform(twootContent: string): SafeHtml {
+    let modifiedText = '';
+    const text = this.sanitizer.sanitize(SecurityContext.HTML, twootContent);
+    const splitText = text.split(' ');
+
+    splitText.forEach(word => {
+      if (word.match(this.regExpUsername)) {
+        modifiedText += ` <a class="user-mention" href="/${word.substr(
+          1
+        )}" target="blank_" >${word}</a>`;
+      } else if (word.match(this.regExpHashtag)) {
+        modifiedText += ` <a href="/explore/${word.substr(
+          1
+        )}" target="blank_" class="hash"> ${word}</a> `;
+      } else if (
+        !word.match(this.regExpHashtag) &&
+        !word.match(this.regExpUsername)
+      ) {
+        modifiedText += ' ' + word;
+      }
+    });
+
+    splitText.forEach(word => {});
+
+    console.log(modifiedText);
+
+    return this.sanitizer.bypassSecurityTrustHtml(modifiedText);
   }
 }

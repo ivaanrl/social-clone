@@ -1,0 +1,56 @@
+<div class="progress" style="height: 3px;">
+  <div
+    class="progress-bar"
+    role="progressbar"
+    [ngStyle]="{ width: getProgressWidth() }"
+    aria-valuenow="25"
+    aria-valuemin="0"
+    aria-valuemax="100"
+  ></div>
+</div>
+<div class=" d-flex flex-column twoot-component w-100 mb-2">
+  <div class="d-flex flex-row">
+    <div
+      class="profile-picture-twoot mr-3"
+      *ngIf="!authService.user.value.getProfilePicName"
+    ></div>
+    <img
+      class="profile-picture-twoot mr-3"
+      [src]="getProfileImage()"
+      *ngIf="authService.user.value.getProfilePicName"
+    />
+    <input
+      type="text"
+      name="twootContent"
+      placeholder="{{ placeHolder }}"
+      class="twoot-input w-100"
+      [(ngModel)]="twootContent"
+    />
+  </div>
+
+  <div class="d-flex flex-row justify-content-between ml-5 mt-3">
+    <div class="image-upload-icon cursor-pointer ml-1">
+      <input
+        #uploadFile
+        type="file"
+        id="uploadFile"
+        class="d-none "
+        accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg, .docx, .pdf"
+        (change)="selectImage($event)"
+      />
+
+      <label for="uploadFile" class="cursor-pointer">
+        <i class="Icon Icon--camera "></i>
+      </label>
+    </div>
+    <div class="btn-container ">
+      <button
+        class="btn btn-lightblue"
+        [disabled]="twootContent === ''"
+        (click)="createTwoot()"
+      >
+        Twoot
+      </button>
+    </div>
+  </div>
+</div>
