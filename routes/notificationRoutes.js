@@ -3,12 +3,13 @@ const uuid = require('uuid');
 module.exports = app => {
   app.post('/api/notifications/sendNotification', async (req, res) => {
     try {
+      console.log(req.body);
       await sequelize.query(
         `INSERT INTO notifications 
           VALUES ('${uuid()}',(SELECT id FROM users WHERE username='${
           req.body.receiver_username
         }'),
-                  ' ${req.body.sender_username} is following you!'
+                  ' ${req.body.message}'
                   )`
       );
       res.json('');

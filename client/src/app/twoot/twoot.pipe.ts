@@ -20,11 +20,11 @@ export class TwootPipe implements PipeTransform {
       if (word.match(this.regExpUsername)) {
         modifiedText += ` <a class="user-mention" href="/${word.substr(
           1
-        )}" target="blank_" >${word}</a>`;
+        )}" >${word}</a>`;
       } else if (word.match(this.regExpHashtag)) {
         modifiedText += ` <a href="/explore/${word.substr(
           1
-        )}" target="blank_" class="hash"> ${word}</a> `;
+        )}"   class="hash"> ${word}</a> `;
       } else if (
         !word.match(this.regExpHashtag) &&
         !word.match(this.regExpUsername)
@@ -35,8 +35,7 @@ export class TwootPipe implements PipeTransform {
 
     splitText.forEach(word => {});
 
-    console.log(modifiedText);
-
     return this.sanitizer.bypassSecurityTrustHtml(modifiedText);
   }
 }
+//

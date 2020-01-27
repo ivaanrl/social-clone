@@ -11,9 +11,17 @@ export class NotificationService {
     'http://localhost:5000/api/notifications/getNotifications';
   constructor(private http: HttpClient) {}
 
-  sendNotification(sender_username: string, receiver_username: string) {
+  sendNotification(
+    sender_username: string,
+    receiver_username: string,
+    message: string
+  ) {
     let sendNotification = this.http
-      .post(this.sendNotificationUrl, { sender_username, receiver_username })
+      .post(this.sendNotificationUrl, {
+        sender_username,
+        receiver_username,
+        message
+      })
       .pipe(
         catchError(this.handleError),
         tap(resData => {

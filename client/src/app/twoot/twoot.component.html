@@ -24,6 +24,7 @@
       <div
         class="twoot-content"
         [innerHtml]="twootContent.content | twootPipe"
+        (click)="getRoute($event)"
       ></div>
 
       <div class="twoot-image-container" *ngIf="twootContent.img_name">

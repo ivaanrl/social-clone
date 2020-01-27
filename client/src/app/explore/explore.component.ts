@@ -30,7 +30,6 @@ export class ExploreComponent implements OnInit {
         });
         this.isLoading = false;
         this.twootsArray = twootsArray;
-        console.log(this.twootsArray);
       },
       errorMessage => {
         this.error = errorMessage;

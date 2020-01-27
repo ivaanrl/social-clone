@@ -1,34 +1,33 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TwootService } from '../shared/twoot.service';
 import { Twoot } from '../shared/twoot.interface';
-import { AuthService } from '../auth/auth.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-hashtag-explore',
+  templateUrl: './hashtag-explore.component.html',
+  styleUrls: ['./hashtag-explore.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HashtagExploreComponent implements OnInit {
+  twootContent: string = '';
+  isLoading = true;
+  twootsArray: Twoot[] = [];
   error: string = null;
 
   constructor(
-    private twootService: TwootService,
-    private authService: AuthService
+    private route: ActivatedRoute,
+    private twootService: TwootService
   ) {}
 
-  twootsArray: Twoot[] = [];
-
-  isLoading = true;
-
   ngOnInit() {
-    this.getTwoots();
-    this.twootService.NewTwootsEmitter.subscribe(async () => {
-      await this.getTwoots();
+    this.route.params.subscribe(params => {
+      let hashtag = params['hashtag'];
+      this.getHashtagTwoots(hashtag);
     });
   }
 
-  async getTwoots() {
-    let twootObs = this.twootService.getTwoots();
+  getHashtagTwoots(hashtag) {
+    let twootObs = this.twootService.getHashtagTwoots(hashtag);
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {

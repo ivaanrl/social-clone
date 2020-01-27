@@ -35,6 +35,8 @@ module.exports = app => {
   app.post('/api/twoot', upload.single('file'), async (req, res, next) => {
     const id = uuid();
     const file = req.file;
+    console.log(req.body);
+    const hashtags = req.body.hashtags.split(' ');
     try {
       let img_name = null;
       if (file) {
@@ -44,7 +46,8 @@ module.exports = app => {
         id: id,
         author_id: req.session.user,
         content: req.body.content,
-        img_name
+        img_name,
+        hashtags
       });
       res.json(req.session);
     } catch (error) {
@@ -55,7 +58,7 @@ module.exports = app => {
   app.get('/api/twoot', async (req, res) => {
     try {
       const twoots = await sequelize.query(
-        `SELECT first_name, last_name, content, twoots."createdAt",
+        `SELECT DISTINCT first_name, last_name, content, twoots."createdAt",
         username, twoots.id AS twoot_id, users.id AS user_id, img_name, users.profile_pic_name AS profile_img_name
         FROM twoots  
         INNER JOIN users ON twoots.author_id = users.id 
@@ -75,7 +78,8 @@ module.exports = app => {
     try {
       const twoots = await sequelize.query(`
       SELECT first_name, last_name, content, twoots."createdAt",
-      username, twoots.id AS twoot_id, users.id AS user_id, img_name, users.profile_pic_name AS profile_img_name
+      username, twoots.id AS twoot_id, users.id AS user_id, img_name, 
+      users.profile_pic_name AS profile_img_name
       FROM twoots
       INNER JOIN users ON users.id = twoots.author_id
       INNER JOIN follows ON users.id = user_id

@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { NotificationService } from './notification.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class FollowService {
@@ -12,7 +13,8 @@ export class FollowService {
 
   constructor(
     private http: HttpClient,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private authService: AuthService
   ) {}
 
   isFollowing(follower: string, following: string) {
@@ -28,7 +30,11 @@ export class FollowService {
     return this.http.post(this.followUrl, { follower, following }).pipe(
       catchError(this.handleError),
       tap(resData => {
-        this.notificationService.sendNotification(follower, following);
+        this.notificationService.sendNotification(
+          follower,
+          following,
+          `${this.authService.user.value.getUsername} is following you!`
+        );
         return resData;
       })
     );

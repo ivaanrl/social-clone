@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { TwootService } from '../shared/twoot.service';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-twoot',
@@ -8,7 +9,8 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./twoot.component.scss']
 })
 export class TwootComponent implements OnInit {
-  @Input() twootContent: {
+  @Input()
+  twootContent: {
     twoot_id: string;
     first_name: string;
     last_name: string;
@@ -25,11 +27,11 @@ export class TwootComponent implements OnInit {
 
   constructor(
     private twootService: TwootService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    console.log(this.twootContent);
     let getFavSub = this.twootService.getFav(
       this.twootContent.twoot_id,
       this.authService.user.value.getUsername
@@ -42,6 +44,15 @@ export class TwootComponent implements OnInit {
         this.userFav = false;
       }
     });
+  }
+
+  getRoute(event) {
+    if (event.target.tagName === 'A') {
+      this.router.navigate([event.target.getAttribute('href')]);
+      event.preventDefault();
+    } else {
+      return;
+    }
   }
 
   sendFav() {

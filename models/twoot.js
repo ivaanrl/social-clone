@@ -23,6 +23,9 @@ module.exports = Twoot = sequelize.define('twoot', {
   child_twoots: {
     type: Sequelize.STRING
   },
+  hashtags: {
+    type: Sequelize.ARRAY(Sequelize.STRING)
+  },
   createdAt: {
     type: Sequelize.DATE
   }

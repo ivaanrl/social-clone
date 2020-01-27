@@ -48,6 +48,7 @@ require('./routes/twootRoutes')(app);
 require('./routes/profileRoutes')(app);
 require('./routes/followRoutes')(app);
 require('./routes/notificationRoutes')(app);
+require('./routes/exploreRoutes')(app);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT);

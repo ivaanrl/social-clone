@@ -1,7 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError, BehaviorSubject } from 'rxjs';
+import { throwError } from 'rxjs';
+import { NotificationService } from './notification.service';
+import { AuthService } from '../auth/auth.service';
 
 export interface TwootContent {
   content: string;
@@ -13,10 +15,17 @@ export class TwootService {
   favUrl = 'http://localhost:5000/api/twoot/fav';
   getFavUrl = 'http://localhost:5000/api/twoot/getFav';
   exploreTwootUrl = 'http://localhost:5000/api/twoot/exploreTwoot';
+  hashtagTwootUrl = 'http://localhost:5000/api/explore/';
 
+  regExpHashtag: RegExp = /(#[^ ]+)/;
+  regExpUsername: RegExp = /(@[^ ]+)/;
   NewTwootsEmitter = new EventEmitter();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    private authService: AuthService
+  ) {}
 
   getNewTwoots() {
     this.NewTwootsEmitter.emit('getNewTwoots');
@@ -24,8 +33,23 @@ export class TwootService {
 
   createTwoot(content: string, image) {
     const formData = new FormData();
+
+    let hashtags: string[] = [];
+    content.split(' ').forEach(word => {
+      if (word.match(this.regExpHashtag)) {
+        hashtags.push(word.substr(1));
+      } else if (word.match(this.regExpUsername)) {
+        this.notificationService.sendNotification(
+          this.authService.user.value.getUsername,
+          word.substr(1),
+          `${this.authService.user.value.getUsername} mentioned you in a twoot!`
+        );
+      }
+    });
+
     formData.append('date', Date.now().toString());
     formData.append('content', content);
+    formData.append('hashtags', hashtags.join(' '));
     formData.append('file', image);
     if (content === '') {
       return;
@@ -50,6 +74,15 @@ export class TwootService {
 
   getExploreTwoots() {
     return this.http.get(this.exploreTwootUrl).pipe(
+      catchError(this.handleError),
+      tap(resData => {
+        return resData;
+      })
+    );
+  }
+
+  getHashtagTwoots(hashtag: string) {
+    return this.http.get(this.hashtagTwootUrl + hashtag).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;

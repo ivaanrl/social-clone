@@ -17,6 +17,7 @@ import { ExploreComponent } from './explore/explore.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { TwootPipe } from './twoot/twoot.pipe';
 import { CreateTwootComponent } from './create-twoot/create-twoot.component';
+import { HashtagExploreComponent } from './hashtag-explore/hashtag-explore.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CreateTwootComponent } from './create-twoot/create-twoot.component';
     ExploreComponent,
     LoadingSpinnerComponent,
     TwootPipe,
-    CreateTwootComponent
+    CreateTwootComponent,
+    HashtagExploreComponent
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [],

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TwootService } from '../shared/twoot.service';
 import { Twoot } from '../shared/twoot.interface';
 import { AuthService } from '../auth/auth.service';
@@ -39,34 +39,37 @@ export class ProfileComponent implements OnInit {
     private authService: AuthService,
     private followService: FollowService,
     private router: Router,
-    private twootService: TwootService
+    private twootService: TwootService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.getTwoots();
-    this.getProfileInformation();
-    this.username = this.authService.user.value.getUsername;
-    if (this.username === this.router.url.substr(1)) {
-      this.buttonText = 'Edit profile';
-      this.toggleModal = 'editProfileModal';
-    } else {
-      let followCheckObs = this.isFollowing(
-        this.username,
-        this.router.url.substr(1)
-      );
-      followCheckObs.subscribe(isFollowing => {
-        if (isFollowing) {
-          this.buttonText = 'Following';
-          this.btnFollow = false;
-          this.following = true;
-          this.toggleModal = '';
-        } else {
-          this.buttonText = 'Follow';
-          this.following = false;
-          this.toggleModal = '';
-        }
-      });
-    }
+    this.route.params.subscribe(param => {
+      this.getTwoots();
+      this.getProfileInformation();
+      this.username = this.authService.user.value.getUsername;
+      if (this.username === this.router.url.substr(1)) {
+        this.buttonText = 'Edit profile';
+        this.toggleModal = 'editProfileModal';
+      } else {
+        let followCheckObs = this.isFollowing(
+          this.username,
+          this.router.url.substr(1)
+        );
+        followCheckObs.subscribe(isFollowing => {
+          if (isFollowing) {
+            this.buttonText = 'Following';
+            this.btnFollow = false;
+            this.following = true;
+            this.toggleModal = '';
+          } else {
+            this.buttonText = 'Follow';
+            this.following = false;
+            this.toggleModal = '';
+          }
+        });
+      }
+    });
   }
 
   getButtonClass() {
@@ -122,13 +125,11 @@ export class ProfileComponent implements OnInit {
         twoot_count: string;
       }) => {
         this.profileInfo = profileInfo;
-        console.log(this.profileInfo);
       }
     );
   }
 
   profileButtonClick() {
-    console.log(this.btnFollow);
     if (this.btnFollow) {
       if (this.buttonText === 'Edit profile') {
         return;
@@ -153,7 +154,6 @@ export class ProfileComponent implements OnInit {
   }
 
   unfollow() {
-    console.log('unfollow');
     let unfollowObs = this.followService.unfollow(
       this.username,
       this.router.url.substr(1)

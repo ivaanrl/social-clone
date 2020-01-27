@@ -8,6 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ExploreComponent } from './explore/explore.component';
+import { HashtagExploreComponent } from './hashtag-explore/hashtag-explore.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard] },
+  {
+    path: 'explore/:hashtag',
+    component: HashtagExploreComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: ':user',
     component: ProfileComponent,
