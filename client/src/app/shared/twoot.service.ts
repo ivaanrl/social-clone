@@ -11,10 +11,10 @@ export interface TwootContent {
 
 @Injectable({ providedIn: 'root' })
 export class TwootService {
-  twootUrl = 'http://localhost:5000/api/twoot';
+  twootUrl = 'http://localhost:5000/api/twoot/';
   favUrl = 'http://localhost:5000/api/twoot/fav';
   getFavUrl = 'http://localhost:5000/api/twoot/getFav';
-  exploreTwootUrl = 'http://localhost:5000/api/twoot/exploreTwoot';
+  exploreTwootUrl = 'http://localhost:5000/api/twoot/exploreTwoot/';
   hashtagTwootUrl = 'http://localhost:5000/api/explore/';
 
   regExpHashtag: RegExp = /(#[^ ]+)/;
@@ -63,8 +63,8 @@ export class TwootService {
     );
   }
 
-  getTwoots() {
-    return this.http.get(this.twootUrl).pipe(
+  getTwoots(page: number) {
+    return this.http.get(this.twootUrl + page).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;
@@ -72,8 +72,8 @@ export class TwootService {
     );
   }
 
-  getExploreTwoots() {
-    return this.http.get(this.exploreTwootUrl).pipe(
+  getExploreTwoots(page: number) {
+    return this.http.get(this.exploreTwootUrl + page).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;
@@ -81,8 +81,8 @@ export class TwootService {
     );
   }
 
-  getHashtagTwoots(hashtag: string) {
-    return this.http.get(this.hashtagTwootUrl + hashtag).pipe(
+  getHashtagTwoots(hashtag: string, page: number) {
+    return this.http.get(this.hashtagTwootUrl + hashtag + '/' + page).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;

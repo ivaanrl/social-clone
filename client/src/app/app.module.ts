@@ -18,6 +18,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { TwootPipe } from './twoot/twoot.pipe';
 import { CreateTwootComponent } from './create-twoot/create-twoot.component';
 import { HashtagExploreComponent } from './hashtag-explore/hashtag-explore.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,13 @@ import { HashtagExploreComponent } from './hashtag-explore/hashtag-explore.compo
     CreateTwootComponent,
     HashtagExploreComponent
   ],
-  imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    InfiniteScrollModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

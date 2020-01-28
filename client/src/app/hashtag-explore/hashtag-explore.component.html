@@ -6,5 +6,9 @@
   <app-twoot
     *ngFor="let twoot of twootsArray"
     [twootContent]="twoot"
+    infiniteScroll
+    [infiniteScrollDistance]="1"
+    [infiniteScrollThrottle]="500"
+    (scrolled)="onScroll()"
   ></app-twoot>
 </div>

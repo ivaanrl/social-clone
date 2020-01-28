@@ -33,12 +33,15 @@ module.exports = app => {
   app.post('/api/profile/basicInfo', async (req, res) => {
     try {
       const profileInfo = await sequelize.query(
-        `SELECT users.id,first_name,last_name,email,about, users."createdAt",profile_pic_name AS profile_img_name, cover_pic_name, COUNT(*) as twoot_count 
-         FROM users 
-         INNER JOIN twoots 
-          ON twoots.author_id = users.id 
-         WHERE username='${req.body.username}' 
-         GROUP BY first_name,last_name,email,about, users."createdAt", profile_img_name, cover_pic_name, users.id`
+        `SELECT users.id,first_name,last_name,email,about, users."createdAt", about,profile_pic_name AS profile_img_name, cover_pic_name,
+        COUNT(*) as twoot_count, (SELECT COUNT(*) FROM FOLLOWS WHERE user_id = (SELECT id FROM users WHERE username='${req.body.username}')) AS following,
+        (SELECT COUNT(*) FROM follows where follower_id = (SELECT id FROM users WHERE username='${req.body.username}')) AS followers
+             FROM users 
+             INNER JOIN twoots 
+              ON twoots.author_id = users.id 
+             WHERE username='${req.body.username}' 
+             GROUP BY first_name,last_name,email,about, users."createdAt", profile_img_name, cover_pic_name, users.id
+    `
       );
       res.json(profileInfo[0][0]);
     } catch (error) {
@@ -67,19 +70,22 @@ module.exports = app => {
 
         if (profilePic) {
           profile_name = `${profilePic.fieldname}.${profilePic.originalname}`;
+          await sequelize.query(`
+          UPDATE users
+          SET profile_pic_name= '${profile_name}'
+          WHERE id = '${req.session.user}'
+          `);
         }
 
         if (coverPic) {
           cover_name = `${coverPic.fieldname}.${coverPic.originalname}`;
+          await sequelize.query(`
+          UPDATE users
+          SET over_pic_name= '${cover_name}'
+          WHERE id = '${req.session.user}'
+          `);
         }
-        console.log(cover_name);
-        await sequelize.query(`
-        UPDATE users
-        SET profile_pic_name= '${profile_name}',
-            cover_pic_name= '${cover_name}'
-        WHERE
-            id = '${req.session.user}'
-        `);
+        res.json('success!');
       } catch (error) {}
     }
   );

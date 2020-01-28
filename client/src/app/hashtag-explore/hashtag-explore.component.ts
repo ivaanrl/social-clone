@@ -13,7 +13,9 @@ export class HashtagExploreComponent implements OnInit {
   isLoading = true;
   twootsArray: Twoot[] = [];
   error: string = null;
-
+  page = 0;
+  loadMoreTwoots = 0;
+  hashtag: string;
   constructor(
     private route: ActivatedRoute,
     private twootService: TwootService
@@ -21,13 +23,15 @@ export class HashtagExploreComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      let hashtag = params['hashtag'];
-      this.getHashtagTwoots(hashtag);
+      this.page = 0;
+      this.loadMoreTwoots = 0;
+      this.hashtag = params['hashtag'];
+      this.getHashtagTwoots(this.hashtag, this.page);
     });
   }
 
-  getHashtagTwoots(hashtag) {
-    let twootObs = this.twootService.getHashtagTwoots(hashtag);
+  getHashtagTwoots(hashtag: string, page: number) {
+    let twootObs = this.twootService.getHashtagTwoots(hashtag, page);
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {
@@ -42,5 +46,15 @@ export class HashtagExploreComponent implements OnInit {
         this.error = errorMessage;
       }
     );
+  }
+
+  async onScroll() {
+    if (this.loadMoreTwoots > 10) {
+      this.page += 1;
+      this.loadMoreTwoots = 0;
+      await this.getHashtagTwoots(this.hashtag, this.page);
+    } else {
+      this.loadMoreTwoots += 1;
+    }
   }
 }

@@ -53,7 +53,14 @@
     <div class="username">{{ '@' + this.router.url.substr(1) }}</div>
     <div class="about">{{ profileInfo.about }}</div>
     <div class="info"></div>
-    <div class="follow-info"></div>
+    <div class="follow-info">
+      {{
+        profileInfo.followers +
+          ' followers  · ' +
+          profileInfo.following +
+          ' following'
+      }}
+    </div>
   </div>
 </div>
 <app-loading-spinner *ngIf="isLoading!"></app-loading-spinner>
@@ -61,6 +68,10 @@
   <app-twoot
     *ngFor="let twoot of twootsArray"
     [twootContent]="twoot"
+    infiniteScroll
+    [infiniteScrollDistance]="1"
+    [infiniteScrollThrottle]="500"
+    (scrolled)="onScroll()"
   ></app-twoot>
 </div>
 
@@ -120,6 +131,7 @@
         <button
           type="button"
           class="btn btn-primary"
+          data-dismiss="modal"
           (click)="saveProfileChanges()"
         >
           Save changes

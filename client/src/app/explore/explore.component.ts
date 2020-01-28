@@ -12,15 +12,18 @@ export class ExploreComponent implements OnInit {
   isLoading = true;
   twootsArray: Twoot[] = [];
   error: string = null;
+  page = 0;
+  loadMoreTwoots = 0;
 
   constructor(private twootService: TwootService) {}
 
   async ngOnInit() {
-    await this.getTwoots();
+    this.page = 0;
+    await this.getTwoots(this.page);
   }
 
-  async getTwoots() {
-    let twootObs = this.twootService.getExploreTwoots();
+  async getTwoots(page: number) {
+    let twootObs = this.twootService.getExploreTwoots(page);
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {
@@ -29,11 +32,23 @@ export class ExploreComponent implements OnInit {
           );
         });
         this.isLoading = false;
-        this.twootsArray = twootsArray;
+        twootsArray.forEach(twoot => {
+          this.twootsArray.push(twoot);
+        });
       },
       errorMessage => {
         this.error = errorMessage;
       }
     );
+  }
+
+  async onScroll() {
+    if (this.loadMoreTwoots > 10) {
+      this.page += 1;
+      this.loadMoreTwoots = 0;
+      await this.getTwoots(this.page);
+    } else {
+      this.loadMoreTwoots += 1;
+    }
   }
 }

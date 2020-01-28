@@ -55,7 +55,7 @@ module.exports = app => {
     }
   });
 
-  app.get('/api/twoot', async (req, res) => {
+  app.get('/api/twoot/:page', async (req, res) => {
     try {
       const twoots = await sequelize.query(
         `SELECT DISTINCT first_name, last_name, content, twoots."createdAt",
@@ -65,7 +65,10 @@ module.exports = app => {
         INNER JOIN follows ON follows.user_id = users.id
         WHERE follows.user_id IN (SELECT follower_id FROM follows
         WHERE user_id = '${req.session.user}')
-        ORDER BY twoots."createdAt" DESC `
+        ORDER BY twoots."createdAt" DESC 
+        LIMIT 15 
+        OFFSET ${parseInt(req.params.page, 10)}*15
+        `
       );
 
       res.json(twoots[0]);
@@ -74,7 +77,7 @@ module.exports = app => {
     }
   });
 
-  app.get('/api/twoot/exploreTwoot', async (req, res) => {
+  app.get('/api/twoot/exploreTwoot/:page', async (req, res) => {
     try {
       const twoots = await sequelize.query(`
       SELECT first_name, last_name, content, twoots."createdAt",
@@ -87,7 +90,8 @@ module.exports = app => {
               WHERE user_id = '${req.session.user}')
           
       ORDER BY twoots."createdAt" DESC
-      LIMIT 10
+      LIMIT 15 
+      OFFSET ${parseInt(req.params.page, 10)}*15
       `);
       res.json(twoots[0]);
     } catch (error) {
@@ -98,7 +102,12 @@ module.exports = app => {
   app.post('/api/userTwoots', async (req, res) => {
     try {
       const userTwoots = await sequelize.query(
-        `SELECT first_name, last_name, content, twoots."createdAt", twoots.id AS twoot_id , users.id AS user_id, img_name, username, users.profile_pic_name AS profile_img_name FROM twoots INNER JOIN users on twoots.author_id = users.id WHERE username='${req.body.username}' ORDER BY twoots."createdAt" DESC`
+        `SELECT first_name, last_name, content, twoots."createdAt", twoots.id AS twoot_id , users.id AS user_id, img_name, username, users.profile_pic_name AS profile_img_name FROM twoots INNER JOIN users on twoots.author_id = users.id 
+        WHERE username='${req.body.username}' 
+        ORDER BY twoots."createdAt" DESC
+        LIMIT 15 
+        OFFSET ${parseInt(req.body.page, 10)}*15
+        `
       );
       res.json(userTwoots[0]);
     } catch (error) {

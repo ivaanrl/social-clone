@@ -10,6 +10,8 @@ import { AuthService } from '../auth/auth.service';
 })
 export class HomeComponent implements OnInit {
   error: string = null;
+  page = 0;
+  loadMoreTwoots = 0;
 
   constructor(
     private twootService: TwootService,
@@ -21,14 +23,16 @@ export class HomeComponent implements OnInit {
   isLoading = true;
 
   ngOnInit() {
-    this.getTwoots();
+    this.page = 0;
+    this.loadMoreTwoots = 0;
+    this.getTwoots(this.page);
     this.twootService.NewTwootsEmitter.subscribe(async () => {
-      await this.getTwoots();
+      await this.getTwoots(this.page);
     });
   }
 
-  async getTwoots() {
-    let twootObs = this.twootService.getTwoots();
+  async getTwoots(page: number) {
+    let twootObs = this.twootService.getTwoots(page);
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {
@@ -37,11 +41,23 @@ export class HomeComponent implements OnInit {
           );
         });
         this.isLoading = false;
-        this.twootsArray = twootsArray;
+        twootsArray.forEach(twoot => {
+          this.twootsArray.push(twoot);
+        });
       },
       errorMessage => {
         this.error = errorMessage;
       }
     );
+  }
+
+  async onScroll() {
+    if (this.loadMoreTwoots > 10) {
+      this.page += 1;
+      this.loadMoreTwoots = 0;
+      await this.getTwoots(this.page);
+    } else {
+      this.loadMoreTwoots += 1;
+    }
   }
 }

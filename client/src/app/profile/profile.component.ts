@@ -33,6 +33,8 @@ export class ProfileComponent implements OnInit {
   toggleModal = '';
   profilePic: ImageData = null;
   coverPic: ImageData = null;
+  page = 0;
+  loadMoreTwoots = 0;
 
   constructor(
     private profileService: ProfileService,
@@ -45,7 +47,10 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(param => {
-      this.getTwoots();
+      this.twootsArray = [];
+      this.page = 0;
+      this.loadMoreTwoots = 0;
+      this.getTwoots(this.page);
       this.getProfileInformation();
       this.username = this.authService.user.value.getUsername;
       if (this.username === this.router.url.substr(1)) {
@@ -90,8 +95,11 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  getTwoots() {
-    let twootObs = this.profileService.getUserTwoots(this.router.url.substr(1));
+  getTwoots(page: number) {
+    let twootObs = this.profileService.getUserTwoots(
+      this.router.url.substr(1),
+      page
+    );
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {
@@ -100,7 +108,9 @@ export class ProfileComponent implements OnInit {
           );
         });
         this.isLoading = false;
-        this.twootsArray = twootsArray;
+        twootsArray.forEach(twoot => {
+          this.twootsArray.push(twoot);
+        });
       },
       errorMessage => {
         this.error = errorMessage;
@@ -193,5 +203,15 @@ export class ProfileComponent implements OnInit {
 
   getCoverImg() {
     return `http://localhost:5000/api/profile/getProfilePicture/${this.profileInfo.id}/${this.profileInfo.cover_pic_name}`;
+  }
+
+  async onScroll() {
+    if (this.loadMoreTwoots > 10) {
+      this.page += 1;
+      this.loadMoreTwoots = 0;
+      await this.getTwoots(this.page);
+    } else {
+      this.loadMoreTwoots += 1;
+    }
   }
 }

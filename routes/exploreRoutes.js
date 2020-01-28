@@ -1,7 +1,7 @@
 const sequelize = require('../config/postgres.config');
 
 module.exports = app => {
-  app.get('/api/explore/:hashtag', async (req, res) => {
+  app.get('/api/explore/:hashtag/:page', async (req, res) => {
     try {
       const hashtag = req.params.hashtag;
       const twoots = await sequelize.query(`
@@ -11,6 +11,8 @@ module.exports = app => {
         FROM twoots
         INNER JOIN users On users.id = twoots.author_id
         WHERE '${hashtag}' = ANY(hashtags)
+        LIMIT 15 
+        OFFSET ${parseInt(req.params.page, 10)}*15
       `);
       res.json(twoots[0]);
     } catch (error) {

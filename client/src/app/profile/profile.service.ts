@@ -11,8 +11,8 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
-  getUserTwoots(username: string) {
-    return this.http.post(this.userTwootsUrl, { username }).pipe(
+  getUserTwoots(username: string, page: number) {
+    return this.http.post(this.userTwootsUrl, { username, page }).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;
