@@ -30,7 +30,7 @@ const ensureExists = (path, mask, cb) => {
 };
 
 module.exports = app => {
-  app.post('/api/profile/basicInfo', async (req, res) => {
+  app.post('/api/profile/basicInfo', async (req, res, next) => {
     try {
       const profileInfo = await sequelize.query(
         `SELECT users.id,first_name,last_name,email,about, users."createdAt", about,profile_pic_name AS profile_img_name, cover_pic_name,
@@ -43,6 +43,9 @@ module.exports = app => {
              GROUP BY first_name,last_name,email,about, users."createdAt", profile_img_name, cover_pic_name, users.id
     `
       );
+      if (!profileInfo) {
+        next(error);
+      }
       res.json(profileInfo[0][0]);
     } catch (error) {
       res.json(error);

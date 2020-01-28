@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 })
 export class NotificationsComponent implements OnInit {
   notifications;
+  error: string = null;
+
   constructor(
     private notificationService: NotificationService,
     private authService: AuthService,
@@ -20,9 +22,14 @@ export class NotificationsComponent implements OnInit {
     let notificationSub = this.notificationService.getNotifications(
       this.authService.user.value.getUsername
     );
-    notificationSub.subscribe(notificationsArray => {
-      this.notifications = notificationsArray;
-    });
+    notificationSub.subscribe(
+      notificationsArray => {
+        this.notifications = notificationsArray;
+      },
+      errorMessage => {
+        this.error = 'Something went wrong.';
+      }
+    );
   }
 
   navigateToProfile(notificationContent: string) {

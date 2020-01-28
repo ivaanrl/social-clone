@@ -8,7 +8,8 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./create-twoot.component.scss']
 })
 export class CreateTwootComponent implements OnInit {
-  @Input() placeHolder;
+  @Input() placeHolder: string;
+  @Input() twoot_id: string;
   progressWidth: number = 0;
   twootContent: string = '';
   error: string = null;
@@ -28,10 +29,39 @@ export class CreateTwootComponent implements OnInit {
   }
 
   async createTwoot() {
-    let twootObs: any;
+    if (this.placeHolder === 'Reply...') {
+      await this.replyTwoot();
+    } else {
+      await this.submitTwoot();
+    }
+  }
+
+  async replyTwoot() {
     this.progressWidth = 25;
     this.getProgressWidth();
-    twootObs = this.twootService.createTwoot(this.twootContent, this.image);
+    let twootObs = this.twootService.replyTwoot(
+      this.twootContent,
+      this.image,
+      this.twoot_id
+    );
+    twootObs.subscribe(
+      async resData => {
+        this.twootService.getNewTwoots();
+        this.progressWidth = 100;
+      },
+      errorMessage => {
+        this.error = errorMessage;
+        this.progressWidth = 0;
+      }
+    );
+    await this.resetTwootForm();
+    this.image = null;
+  }
+
+  async submitTwoot() {
+    this.progressWidth = 25;
+    this.getProgressWidth();
+    let twootObs = this.twootService.createTwoot(this.twootContent, this.image);
     twootObs.subscribe(
       async resData => {
         this.twootService.getNewTwoots();

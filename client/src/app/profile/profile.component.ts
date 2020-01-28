@@ -113,7 +113,8 @@ export class ProfileComponent implements OnInit {
         });
       },
       errorMessage => {
-        this.error = errorMessage;
+        this.error =
+          'Something went wrong retrieving some twoots. Please try again.';
       }
     );
   }
@@ -134,7 +135,16 @@ export class ProfileComponent implements OnInit {
         cover_pic_name: string;
         twoot_count: string;
       }) => {
-        this.profileInfo = profileInfo;
+        if (!profileInfo) {
+          console.log('a');
+          this.error = "This user doesn't exists";
+        } else {
+          this.profileInfo = profileInfo;
+        }
+        console.log(this.error);
+      },
+      errorMessage => {
+        this.error = 'Something went wrong. Please try again.';
       }
     );
   }
@@ -198,11 +208,15 @@ export class ProfileComponent implements OnInit {
   }
 
   getProfileImg() {
-    return `http://localhost:5000/api/profile/getProfilePicture/${this.profileInfo.id}/${this.profileInfo.profile_img_name}`;
+    if (this.profileInfo) {
+      return `http://localhost:5000/api/profile/getProfilePicture/${this.profileInfo.id}/${this.profileInfo.profile_img_name}`;
+    }
   }
 
   getCoverImg() {
-    return `http://localhost:5000/api/profile/getProfilePicture/${this.profileInfo.id}/${this.profileInfo.cover_pic_name}`;
+    if (this.profileInfo) {
+      return `http://localhost:5000/api/profile/getProfilePicture/${this.profileInfo.id}/${this.profileInfo.cover_pic_name}`;
+    }
   }
 
   async onScroll() {

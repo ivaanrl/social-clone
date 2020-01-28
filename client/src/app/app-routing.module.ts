@@ -9,6 +9,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { MessagesComponent } from './messages/messages.component';
 import { ExploreComponent } from './explore/explore.component';
 import { HashtagExploreComponent } from './hashtag-explore/hashtag-explore.component';
+import { TwootWithRepliesComponent } from './twoot-with-replies/twoot-with-replies.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,11 @@ const routes: Routes = [
   {
     path: 'explore/:hashtag',
     component: HashtagExploreComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'twoot/:twoot_id',
+    component: TwootWithRepliesComponent,
     canActivate: [AuthGuard]
   },
   {

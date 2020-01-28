@@ -1,4 +1,8 @@
-<div class="twoot-container d-flex flex-row align-items-start">
+<div
+  class="twoot-container d-flex flex-row align-items-start"
+  style="cursor: pointer;"
+  id="{{ twootContent.twoot_id }}"
+>
   <div
     class="twoot-profile-picture mr-4"
     *ngIf="!twootContent.profile_img_name"
@@ -18,7 +22,10 @@
         {{ twootContent.first_name + ' ' + twootContent.last_name }}
       </div>
       <div class="twoot-username">{{ '@' + twootContent.username }}</div>
-      <div class="twoot-time">{{ '·  ' + twootContent.createdAt }}</div>
+      <div class="twoot-time" (click)="navigateToTwoot()">
+        {{ '·  ' + twootContent.createdAt }}
+      </div>
+      <app-alert *ngIf="error" [message]="error"></app-alert>
     </div>
     <div class="twoot-bot">
       <div
@@ -74,7 +81,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-create-twoot [placeHolder]="'Reply...'"></app-create-twoot>
+        <app-create-twoot
+          [placeHolder]="'Reply...'"
+          [twoot_id]="twootContent.twoot_id"
+        ></app-create-twoot>
       </div>
     </div>
   </div>

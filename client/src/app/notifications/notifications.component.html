@@ -9,6 +9,7 @@
     <div class="notification-icon mr-4 ml-3">
       <i class="Icon Icon--circleReply"></i>
     </div>
+    <app-alert *ngIf="error" [message]="error"></app-alert>
     <div class="notification-content">
       {{ notification.content }}
     </div>

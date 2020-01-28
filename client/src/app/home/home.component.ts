@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
         });
       },
       errorMessage => {
-        this.error = errorMessage;
+        this.error = 'Something went wrong.';
       }
     );
   }

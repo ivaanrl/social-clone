@@ -16,6 +16,7 @@ export class TwootService {
   getFavUrl = 'http://localhost:5000/api/twoot/getFav';
   exploreTwootUrl = 'http://localhost:5000/api/twoot/exploreTwoot/';
   hashtagTwootUrl = 'http://localhost:5000/api/explore/';
+  replyTwootUrl = 'http://localhost:5000/api/twoot/reply';
 
   regExpHashtag: RegExp = /(#[^ ]+)/;
   regExpUsername: RegExp = /(@[^ ]+)/;
@@ -63,6 +64,39 @@ export class TwootService {
     );
   }
 
+  replyTwoot(content: string, image, parent_twoot_id: string) {
+    const formData = new FormData();
+
+    let hashtags: string[] = [];
+    content.split(' ').forEach(word => {
+      if (word.match(this.regExpHashtag)) {
+        hashtags.push(word.substr(1));
+      } else if (word.match(this.regExpUsername)) {
+        this.notificationService.sendNotification(
+          this.authService.user.value.getUsername,
+          word.substr(1),
+          `${this.authService.user.value.getUsername} mentioned you in a twoot!`
+        );
+      }
+    });
+
+    formData.append('date', Date.now().toString());
+    formData.append('content', content);
+    formData.append('hashtags', hashtags.join(' '));
+    formData.append('parent_twoot_id', parent_twoot_id);
+    formData.append('file', image);
+    if (content === '') {
+      return;
+    }
+
+    return this.http.post(this.replyTwootUrl, formData).pipe(
+      catchError(this.handleError),
+      tap(resData => {
+        return resData;
+      })
+    );
+  }
+
   getTwoots(page: number) {
     return this.http.get(this.twootUrl + page).pipe(
       catchError(this.handleError),
@@ -79,6 +113,17 @@ export class TwootService {
         return resData;
       })
     );
+  }
+
+  getTwootsWithReplies(page: number, parent_id: string) {
+    return this.http
+      .get(this.replyTwootUrl + '/' + page + '/' + parent_id)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   getHashtagTwoots(hashtag: string, page: number) {

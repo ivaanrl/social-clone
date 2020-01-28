@@ -19,6 +19,8 @@ import { TwootPipe } from './twoot/twoot.pipe';
 import { CreateTwootComponent } from './create-twoot/create-twoot.component';
 import { HashtagExploreComponent } from './hashtag-explore/hashtag-explore.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { AlertComponent } from './shared/alert/alert.component';
+import { TwootWithRepliesComponent } from './twoot-with-replies/twoot-with-replies.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     LoadingSpinnerComponent,
     TwootPipe,
     CreateTwootComponent,
-    HashtagExploreComponent
+    HashtagExploreComponent,
+    AlertComponent,
+    TwootWithRepliesComponent
   ],
   imports: [
     BrowserModule,

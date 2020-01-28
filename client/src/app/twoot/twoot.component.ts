@@ -24,6 +24,7 @@ export class TwootComponent implements OnInit {
   userFav = false;
   img = null;
   isLoading = true;
+  error: string = null;
 
   constructor(
     private twootService: TwootService,
@@ -36,14 +37,19 @@ export class TwootComponent implements OnInit {
       this.twootContent.twoot_id,
       this.authService.user.value.getUsername
     );
-    getFavSub.subscribe(isFaved => {
-      this.isLoading = false;
-      if (isFaved) {
-        this.userFav = true;
-      } else {
-        this.userFav = false;
+    getFavSub.subscribe(
+      isFaved => {
+        this.isLoading = false;
+        if (isFaved) {
+          this.userFav = true;
+        } else {
+          this.userFav = false;
+        }
+      },
+      errorMessage => {
+        this.error = "Couldn't load twoot properly.";
       }
-    });
+    );
   }
 
   getRoute(event) {
@@ -71,5 +77,9 @@ export class TwootComponent implements OnInit {
 
   getProfileImg() {
     return `http://localhost:5000/api/profile/getProfilePicture/${this.twootContent.user_id}/${this.twootContent.profile_img_name}`;
+  }
+
+  navigateToTwoot() {
+    this.router.navigate([`/twoot/${this.twootContent.twoot_id}`]);
   }
 }
