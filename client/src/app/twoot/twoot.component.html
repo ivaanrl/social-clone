@@ -1,7 +1,6 @@
 <div
   class="twoot-container d-flex flex-row align-items-start"
   style="cursor: pointer;"
-  id="{{ twootContent.twoot_id }}"
 >
   <div
     class="twoot-profile-picture mr-4"
@@ -39,7 +38,11 @@
         <img class="twoot-image" [src]="getImg()" *ngIf="!isLoading" />
       </div>
       <div class="twoot-options d-flex justify-content-around w-100">
-        <div class="respond" data-toggle="modal" data-target="#twootReplyModal">
+        <div
+          class="respond"
+          data-toggle="modal"
+          [attr.data-target]="'#' + twootContent.twoot_id"
+        >
           <i class="Icon Icon--conversation"></i>
         </div>
         <div class="retweet">
@@ -59,10 +62,10 @@
 <!-- Modal -->
 <div
   class="modal fade"
-  id="twootReplyModal"
+  [id]="twootContent.twoot_id"
   tabindex="-1"
   role="dialog"
-  aria-labelledby="twootReplyModalTitle"
+  aria-labelledby="exampleModalLongTitle"
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

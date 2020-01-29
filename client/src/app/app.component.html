@@ -1,13 +1,16 @@
 <div
-  class="container d-flex justify-content-center"
+  class="d-flex justify-content-center main-container"
   *ngIf="router.url != '/auth' && !router.url.includes('signup')"
 >
   <div class="row w-100">
-    <div class="col-xl-3 col-md-1 col-sm-1 nav">
+    <div class="col-xl-2 col-lg-1 col-sm-1 nav">
       <app-navbar></app-navbar>
     </div>
-    <div class="col-xl-6 col-md-6 col-sm-4">
+    <div class="col-xl-6 col-lg-6 col-sm-4 mid-col">
       <router-outlet></router-outlet>
+    </div>
+    <div class="col-xl-4 d-none d-xl-block">
+      <app-right-sidebar></app-right-sidebar>
     </div>
   </div>
 </div>

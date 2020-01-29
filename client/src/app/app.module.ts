@@ -21,6 +21,7 @@ import { HashtagExploreComponent } from './hashtag-explore/hashtag-explore.compo
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AlertComponent } from './shared/alert/alert.component';
 import { TwootWithRepliesComponent } from './twoot-with-replies/twoot-with-replies.component';
+import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { TwootWithRepliesComponent } from './twoot-with-replies/twoot-with-repli
     CreateTwootComponent,
     HashtagExploreComponent,
     AlertComponent,
-    TwootWithRepliesComponent
+    TwootWithRepliesComponent,
+    RightSidebarComponent
   ],
   imports: [
     BrowserModule,
