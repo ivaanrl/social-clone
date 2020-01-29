@@ -22,6 +22,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { AlertComponent } from './shared/alert/alert.component';
 import { TwootWithRepliesComponent } from './twoot-with-replies/twoot-with-replies.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
     HashtagExploreComponent,
     AlertComponent,
     TwootWithRepliesComponent,
-    RightSidebarComponent
+    RightSidebarComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

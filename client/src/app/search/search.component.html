@@ -1,0 +1,21 @@
+<form (submit)="search($event)">
+  <input
+    type="text"
+    class="form-control search-input"
+    placeholder="Search users or hashtags"
+    aria-label="Username"
+    name="searchContent"
+    [(ngModel)]="searchContent"
+    aria-describedby="basic-addon1"
+  />
+</form>
+<div style="width: 600px;" *ngIf="!isLoading">
+  <app-twoot
+    *ngFor="let twoot of twootsArray"
+    [twootContent]="twoot"
+    infiniteScroll
+    [infiniteScrollDistance]="1"
+    [infiniteScrollThrottle]="500"
+    (scrolled)="onScroll()"
+  ></app-twoot>
+</div>

@@ -10,6 +10,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { ExploreComponent } from './explore/explore.component';
 import { HashtagExploreComponent } from './hashtag-explore/hashtag-explore.component';
 import { TwootWithRepliesComponent } from './twoot-with-replies/twoot-with-replies.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,11 @@ const routes: Routes = [
   {
     path: 'twoot/:twoot_id',
     component: TwootWithRepliesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'search/:searchContent',
+    component: SearchComponent,
     canActivate: [AuthGuard]
   },
   {

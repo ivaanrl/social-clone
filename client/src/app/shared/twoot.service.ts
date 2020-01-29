@@ -135,6 +135,17 @@ export class TwootService {
     );
   }
 
+  getSearchTwoots(search: string, page: number) {
+    return this.http
+      .get(this.hashtagTwootUrl + 'search/' + search + '/' + page)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
+  }
+
   getTimeDifference(twootTime: string) {
     let dateTwoot: number | string =
       (Date.now() - Date.parse(twootTime)) / 1000 / 60;
