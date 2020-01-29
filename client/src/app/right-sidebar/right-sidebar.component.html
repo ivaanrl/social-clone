@@ -9,3 +9,12 @@
     aria-describedby="basic-addon1"
   />
 </form>
+<div
+  class="main-container"
+  *ngFor="let hashtag of mostUsedHashtags"
+  [routerLink]="'/search/' + hashtag.hashtag"
+>
+  <div class="trending">Trending</div>
+  <div class="hashtag">{{ '#' + hashtag.hashtag }}</div>
+  <div class="number-of-twoots">{{ hashtag.hashtag_times + ' twoots' }}</div>
+</div>

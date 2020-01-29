@@ -17,6 +17,7 @@ export class TwootService {
   exploreTwootUrl = 'http://localhost:5000/api/twoot/exploreTwoot/';
   hashtagTwootUrl = 'http://localhost:5000/api/explore/';
   replyTwootUrl = 'http://localhost:5000/api/twoot/reply';
+  getMostUsedHashtagsUrl = 'http://localhost:5000/api/explore/mostUsedHashtags';
 
   regExpHashtag: RegExp = /(#[^ ]+)/;
   regExpUsername: RegExp = /(@[^ ]+)/;
@@ -176,6 +177,15 @@ export class TwootService {
 
   getFav(twoot_id: string, username: string) {
     return this.http.post(this.getFavUrl, { twoot_id, username }).pipe(
+      catchError(this.handleError),
+      tap(resData => {
+        return resData;
+      })
+    );
+  }
+
+  getMostUsedHashtags() {
+    return this.http.get(this.getMostUsedHashtagsUrl).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;

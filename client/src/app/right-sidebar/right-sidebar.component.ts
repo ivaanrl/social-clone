@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TwootService } from '../shared/twoot.service';
 
 @Component({
   selector: 'app-right-sidebar',
@@ -8,10 +9,20 @@ import { Router } from '@angular/router';
 })
 export class RightSidebarComponent implements OnInit {
   searchContent: string = '';
+  mostUsedHashtags;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private twootService: TwootService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getMostUsedHashtags();
+  }
+
+  getMostUsedHashtags() {
+    let hashObs = this.twootService.getMostUsedHashtags();
+    hashObs.subscribe(resData => {
+      this.mostUsedHashtags = resData;
+    });
+  }
 
   search(event) {
     event.preventDefault();

@@ -6,3 +6,28 @@
   padding: 5px;
   padding-left: 20px;
 }
+
+.main-container {
+  padding: 15px;
+  border-bottom: 1px solid $line-color;
+  cursor: pointer;
+}
+
+.main-container:focus {
+  border: none;
+}
+
+.trending {
+  color: $muted-text;
+  font-size: 12px;
+}
+
+.hashtag {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.number-of-twoots {
+  color: $muted-text;
+  font-size: 14px;
+}

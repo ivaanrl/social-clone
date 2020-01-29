@@ -38,4 +38,20 @@ module.exports = app => {
       res.json(error);
     }
   });
+
+  app.get('/api/explore/mostUsedHashtags', async (req, res) => {
+    try {
+      const hashtags = await sequelize.query(`
+        SELECT hashtag, COUNT(*) as hashtag_times
+        FROM twoots, unnest(hashtags) as hashtag
+        WHERE NOT '' = ANY(hashtags)
+        GROUP BY hashtag
+        ORDER BY COUNT(*) DESC
+        LIMIT 7
+      `);
+      res.json(hashtags[0]);
+    } catch (error) {
+      res.json(error);
+    }
+  });
 };

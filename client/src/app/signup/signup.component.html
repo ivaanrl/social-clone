@@ -119,6 +119,9 @@
           </div>
         </small>
       </div>
+      <div class="error" *ngIf="error">
+        {{ error }}
+      </div>
       <button
         type="submit"
         class="btn btn-primary"

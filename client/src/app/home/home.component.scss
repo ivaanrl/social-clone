@@ -1,8 +1,7 @@
 @import 'src/styles.scss';
 /****************NEW TWOOT **********************/
 .navbar {
-  border-bottom: 1px solid $line-color;
-  min-width: 600px;
+  max-width: 600px;
 }
 
 .hash {

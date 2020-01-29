@@ -10,10 +10,16 @@
 
 .twoot-component {
   min-width: 600px;
+  max-width: 600px;
 }
 
 .twoot-input {
   border: none;
+}
+
+.progress {
+  min-width: 600px;
+  max-width: 600px;
 }
 
 .image-upload-icon {
@@ -27,4 +33,13 @@
 
 .btn-container {
   margin-right: 20px;
+}
+
+@media (max-width: 700px) {
+  .twoot-component {
+    min-width: 200px;
+  }
+  .progress {
+    min-width: 200px;
+  }
 }

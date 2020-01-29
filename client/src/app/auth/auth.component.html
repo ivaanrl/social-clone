@@ -50,7 +50,9 @@
               placeholder="Password"
               [(ngModel)]="password"
             />
-            <a style="color: #87898a; font-size: 12px;">Forgot password?</a>
+            <div class="error" *ngIf="error">
+              {{ error }}
+            </div>
           </div>
           <button
             class="btn btn-clear-small align-self-start"

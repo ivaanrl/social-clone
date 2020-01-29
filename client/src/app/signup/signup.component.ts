@@ -46,7 +46,7 @@ export class SignupComponent implements OnInit {
         this.router.navigate(['/']);
       },
       errorMessage => {
-        this.error = errorMessage;
+        this.error = 'Username/email already taken';
         this.isLoading = false;
       }
     );

@@ -26,12 +26,6 @@ module.exports = app => {
       const response = await sequelize.query(
         `SELECT id, email, username, profile_pic_name FROM users WHERE id='${req.session.user}'`
       );
-      console.log(response[0][0]);
-      //const response = {
-      //  email: req.user.email,
-      //  username: req.user.username,
-      //  id: req.user.id
-      //};
       res.json(response[0][0]);
     }
   );

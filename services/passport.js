@@ -29,11 +29,14 @@ passport.use(
             [Op.or]: [{ email: email }, { username: email }]
           }
         });
+
         if (!logUser) {
-          return done(null, false);
+          return done(null, false, { message: 'not such user' });
         }
         if (bcrypt.compareSync(password, logUser.password)) {
           return done(null, logUser);
+        } else {
+          return done(null, false, { message: 'not such user' });
         }
       } catch (error) {
         done(error);
