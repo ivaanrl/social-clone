@@ -106,6 +106,7 @@
         class="nav-link  d-flex flex-row align-items-center"
         [routerLink]="['/:username']"
         routerLinkActive="nav-link-active"
+        (click)="navigateToProfile()"
       >
         <div class="icon-sidebar mr-2">
           <i class="Icon Icon--bookmark"></i>
