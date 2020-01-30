@@ -6,9 +6,9 @@ import { throwError } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
   sendNotificationUrl =
-    'http://localhost:5000/api/notifications/sendNotification';
+    'https://cryptic-anchorage-68791.herokuapp.com/api/notifications/sendNotification';
   getNotificationsUrl =
-    'http://localhost:5000/api/notifications/getNotifications';
+    'https://cryptic-anchorage-68791.herokuapp.com/api/notifications/getNotifications';
   constructor(private http: HttpClient) {}
 
   sendNotification(

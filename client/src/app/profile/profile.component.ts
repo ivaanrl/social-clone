@@ -27,6 +27,8 @@ export class ProfileComponent implements OnInit {
     profile_img_name: string;
     cover_pic_name: string;
     twoot_count: string;
+    followers: number;
+    following: number;
   };
   btnFollow: boolean = true;
   following: boolean = false;
@@ -40,7 +42,7 @@ export class ProfileComponent implements OnInit {
     private profileService: ProfileService,
     private authService: AuthService,
     private followService: FollowService,
-    private router: Router,
+    public router: Router,
     private twootService: TwootService,
     private route: ActivatedRoute
   ) {}
@@ -134,6 +136,8 @@ export class ProfileComponent implements OnInit {
         profile_img_name: string;
         cover_pic_name: string;
         twoot_count: string;
+        followers: number;
+        following: number;
       }) => {
         if (!profileInfo) {
           console.log('a');

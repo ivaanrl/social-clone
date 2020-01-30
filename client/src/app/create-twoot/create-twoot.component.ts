@@ -17,7 +17,7 @@ export class CreateTwootComponent implements OnInit {
 
   constructor(
     private twootService: TwootService,
-    private authService: AuthService
+    public authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -46,7 +46,6 @@ export class CreateTwootComponent implements OnInit {
     );
     twootObs.subscribe(
       async resData => {
-        this.twootService.getNewTwoots();
         this.progressWidth = 100;
       },
       errorMessage => {
@@ -64,7 +63,6 @@ export class CreateTwootComponent implements OnInit {
     let twootObs = this.twootService.createTwoot(this.twootContent, this.image);
     twootObs.subscribe(
       async resData => {
-        this.twootService.getNewTwoots();
         this.progressWidth = 100;
       },
       errorMessage => {

@@ -7,9 +7,12 @@ import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class FollowService {
-  followCheckUrl = 'http://localhost:5000/api/followers/check';
-  followUrl = 'http://localhost:5000/api/followers/follow';
-  unfollowUrl = 'http://localhost:5000/api/followers/unfollow';
+  followCheckUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/followers/check';
+  followUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/followers/follow';
+  unfollowUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/followers/unfollow';
 
   constructor(
     private http: HttpClient,

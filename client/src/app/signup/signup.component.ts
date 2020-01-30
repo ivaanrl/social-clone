@@ -14,7 +14,13 @@ export class SignupComponent implements OnInit {
   isLoading: boolean = false;
   @ViewChild('signupForm', null) signupForm: NgForm;
 
-  signup: {};
+  signup: {
+    username: '';
+    email: '';
+    firstname: '';
+    lastname: '';
+    password: '';
+  };
 
   constructor(private authService: AuthService, private router: Router) {}
 

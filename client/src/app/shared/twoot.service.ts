@@ -11,13 +11,17 @@ export interface TwootContent {
 
 @Injectable({ providedIn: 'root' })
 export class TwootService {
-  twootUrl = 'http://localhost:5000/api/twoot/';
-  favUrl = 'http://localhost:5000/api/twoot/fav';
-  getFavUrl = 'http://localhost:5000/api/twoot/getFav';
-  exploreTwootUrl = 'http://localhost:5000/api/twoot/exploreTwoot/';
-  hashtagTwootUrl = 'http://localhost:5000/api/explore/';
-  replyTwootUrl = 'http://localhost:5000/api/twoot/reply';
-  getMostUsedHashtagsUrl = 'http://localhost:5000/api/explore/mostUsedHashtags';
+  twootUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/twoot/';
+  favUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/twoot/fav';
+  getFavUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/twoot/getFav';
+  exploreTwootUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/twoot/exploreTwoot/';
+  hashtagTwootUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/explore/';
+  replyTwootUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/twoot/reply';
+  getMostUsedHashtagsUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/explore/mostUsedHashtags';
 
   regExpHashtag: RegExp = /(#[^ ]+)/;
   regExpUsername: RegExp = /(@[^ ]+)/;

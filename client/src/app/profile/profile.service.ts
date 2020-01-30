@@ -5,9 +5,12 @@ import { throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
-  userTwootsUrl = 'http://localhost:5000/api/userTwoots';
-  profileInfoUrl = 'http://localhost:5000/api/profile/basicInfo';
-  saveProfileChangesUrl = 'http://localhost:5000/api/profile/saveChanges';
+  userTwootsUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/userTwoots';
+  profileInfoUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/profile/basicInfo';
+  saveProfileChangesUrl =
+    'https://cryptic-anchorage-68791.herokuapp.com/api/profile/saveChanges';
 
   constructor(private http: HttpClient) {}
 
@@ -31,14 +34,17 @@ export class ProfileService {
 
   saveProfileChanges(profilePic, coverPic) {
     const formData = new FormData();
-    formData.append('profilepic', profilePic);
-    formData.append('coverpic', coverPic);
-    return this.http.post(this.saveProfileChangesUrl, formData).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
-      })
-    );
+    console.log(profilePic);
+    //formData.append('profilepic', profilePic);
+    //formData.append('coverpic', coverPic);
+    return this.http
+      .post(this.saveProfileChangesUrl, { profilePic, coverPic })
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   private handleError(errorRes: HttpErrorResponse) {

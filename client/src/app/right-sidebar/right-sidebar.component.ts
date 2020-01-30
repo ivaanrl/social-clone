@@ -11,7 +11,7 @@ export class RightSidebarComponent implements OnInit {
   searchContent: string = '';
   mostUsedHashtags;
 
-  constructor(private router: Router, private twootService: TwootService) {}
+  constructor(public router: Router, private twootService: TwootService) {}
 
   ngOnInit() {
     this.getMostUsedHashtags();
