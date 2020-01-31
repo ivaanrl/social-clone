@@ -1,6 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TwootService } from '../shared/twoot.service';
 import { AuthService } from '../auth/auth.service';
+import {
+  FileUploaderOptions,
+  ParsedResponseHeaders,
+  FileUploader
+} from 'ng2-file-upload';
+import { Cloudinary } from '@cloudinary/angular-5.x';
 
 @Component({
   selector: 'app-create-twoot',
@@ -14,14 +20,61 @@ export class CreateTwootComponent implements OnInit {
   twootContent: string = '';
   error: string = null;
   image: ImageData = null;
+  buttonDisabled = true;
+
+  response: string;
+  uploader: FileUploader;
 
   constructor(
     private twootService: TwootService,
-    public authService: AuthService
+    public authService: AuthService,
+    private cloudinary: Cloudinary
   ) {}
 
   ngOnInit() {
     this.getProgressWidth();
+    const uploaderOptions: FileUploaderOptions = {
+      url: `https://api.cloudinary.com/v1_1/${
+        this.cloudinary.config().cloud_name
+      }/upload`,
+      // Upload files automatically upon addition to upload queue
+      autoUpload: true,
+      // Use xhrTransport in favor of iframeTransport
+      isHTML5: true,
+      // Calculate progress independently for each uploaded file
+      removeAfterUpload: true,
+      // XHR request headers
+      headers: [
+        {
+          name: 'X-Requested-With',
+          value: 'XMLHttpRequest'
+        }
+      ]
+    };
+
+    this.uploader = new FileUploader(uploaderOptions);
+
+    this.uploader.onBuildItemForm = (fileItem: any, form: FormData): any => {
+      this.buttonDisabled = true;
+      form.append('upload_preset', this.cloudinary.config().upload_preset);
+      form.append('folder', 'twoots');
+      form.append('file', fileItem);
+
+      fileItem.withCredentials = false;
+      return { fileItem, form };
+    };
+
+    this.uploader.onCompleteItem = (
+      item: any,
+      response,
+      status: number,
+      headers: ParsedResponseHeaders
+    ) => {
+      this.response = JSON.parse(response).secure_url;
+
+      console.log(this.response);
+      this.buttonDisabled = false;
+    };
   }
 
   getProgressWidth() {
@@ -41,7 +94,7 @@ export class CreateTwootComponent implements OnInit {
     this.getProgressWidth();
     let twootObs = this.twootService.replyTwoot(
       this.twootContent,
-      this.image,
+      this.response,
       this.twoot_id
     );
     twootObs.subscribe(
@@ -60,7 +113,10 @@ export class CreateTwootComponent implements OnInit {
   async submitTwoot() {
     this.progressWidth = 25;
     this.getProgressWidth();
-    let twootObs = this.twootService.createTwoot(this.twootContent, this.image);
+    let twootObs = this.twootService.createTwoot(
+      this.twootContent,
+      this.response
+    );
     twootObs.subscribe(
       async resData => {
         this.progressWidth = 100;
@@ -82,14 +138,7 @@ export class CreateTwootComponent implements OnInit {
     }, 900);
   }
 
-  selectImage(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.image = file;
-    }
-  }
-
   getProfileImage() {
-    return `http://localhost:5000/api/profile/getProfilePicture/${this.authService.user.value.getid}/${this.authService.user.value.getProfilePicName}`;
+    return `${this.authService.user.value.getProfilePicName}`;
   }
 }

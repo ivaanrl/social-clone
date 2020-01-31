@@ -9,7 +9,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findOne({ where: { id: id } }).then(user => {
+  global.db.User.findOne({ where: { id: id } }).then(user => {
     done(null, user);
   });
 });
@@ -24,7 +24,7 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        const logUser = await User.findOne({
+        const logUser = await global.db.User.findOne({
           where: {
             [Op.or]: [{ email: email }, { username: email }]
           }
@@ -54,8 +54,7 @@ passport.use(
       passReqToCallback: true
     },
     async (req, email, password, done) => {
-      console.log(req.body);
-      const existingUser = await User.findOne({
+      const existingUser = await global.db.User.findOne({
         where: {
           email: email
         }
@@ -65,7 +64,7 @@ passport.use(
       } else {
         try {
           const id = uuid();
-          const newUser = await User.create({
+          const newUser = await global.db.User.create({
             id: id,
             email: email,
             password: bcrypt.hashSync(req.body.password),
@@ -73,6 +72,7 @@ passport.use(
             last_name: req.body.lastname,
             username: req.body.username
           });
+          console.log(newUser);
           return done(null, newUser);
         } catch (error) {
           done(error);

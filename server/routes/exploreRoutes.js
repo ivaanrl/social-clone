@@ -1,4 +1,4 @@
-const sequelize = require('../config/postgres.config');
+//const sequelize = require('../config/postgres.config');
 
 module.exports = app => {
   app.get('/api/explore/:hashtag/:page', async (req, res) => {

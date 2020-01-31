@@ -1,32 +1,33 @@
-const sequelize = require('../config/postgres.config');
-const Sequelize = require('sequelize');
-
-module.exports = Twoot = sequelize.define('twoot', {
-  id: {
-    type: Sequelize.STRING,
-    primaryKey: true,
-    allowNull: false,
-    field: 'id'
-  },
-  author_id: {
-    type: Sequelize.STRING
-  },
-  content: {
-    type: Sequelize.STRING
-  },
-  img_name: {
-    type: Sequelize.TEXT
-  },
-  parent_twoot: {
-    type: Sequelize.STRING
-  },
-  child_twoots: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
-  },
-  hashtags: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
-  },
-  createdAt: {
-    type: Sequelize.DATE
-  }
-});
+module.exports = (sequelize, DataTypes) => {
+  return sequelize.define('twoots', {
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+      allowNull: false,
+      field: 'id'
+    },
+    author_id: {
+      type: DataTypes.STRING
+    },
+    content: {
+      type: DataTypes.STRING
+    },
+    img_name: {
+      type: DataTypes.TEXT
+    },
+    parent_twoot: {
+      type: DataTypes.STRING
+    },
+    hashtags: {
+      type: DataTypes.ARRAY(DataTypes.STRING)
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    }
+  });
+};

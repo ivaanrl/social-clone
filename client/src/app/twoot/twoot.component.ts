@@ -72,11 +72,11 @@ export class TwootComponent implements OnInit {
   }
 
   getImg() {
-    return `http://localhost:5000/api/twoots/getTwootImage/${this.twootContent.user_id}/${this.twootContent.img_name}`;
+    return `${this.twootContent.img_name}`;
   }
 
   getProfileImg() {
-    return `http://localhost:5000/api/profile/getProfilePicture/${this.twootContent.user_id}/${this.twootContent.profile_img_name}`;
+    return `${this.twootContent.profile_img_name}`;
   }
 
   navigateToTwoot() {

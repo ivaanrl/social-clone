@@ -23,10 +23,18 @@ import { AlertComponent } from './shared/alert/alert.component';
 import { TwootWithRepliesComponent } from './twoot-with-replies/twoot-with-replies.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { SearchComponent } from './search/search.component';
+import { CloudinaryModule } from '@cloudinary/angular-5.x';
+import { Cloudinary as CloudinaryCore } from 'cloudinary-core';
+import { FileUploadModule } from 'ng2-file-upload';
+
+export const cloudinary = {
+  Cloudinary: CloudinaryCore
+};
 
 @NgModule({
   declarations: [
     AppComponent,
+
     AuthComponent,
     HomeComponent,
     NavbarComponent,
@@ -46,11 +54,16 @@ import { SearchComponent } from './search/search.component';
     SearchComponent
   ],
   imports: [
+    FileUploadModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    CloudinaryModule.forRoot(cloudinary, {
+      cloud_name: 'twitter-clone',
+      upload_preset: 'mvdq7dxs'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

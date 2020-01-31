@@ -1,91 +1,62 @@
-const Twoot = require('../models/twoot');
 const uuid = require('uuid');
-const sequelize = require('../config/postgres.config');
-const multer = require('multer');
-const fs = require('fs');
-
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    ensureExists(__dirname + `/uploads/${req.session.user}`, 0744, err => {});
-    ensureExists(
-      __dirname + `/uploads/${req.session.user}/twoot_pictures`,
-      0744,
-      err => {}
-    );
-
-    callback(null, __dirname + `/uploads/${req.session.user}/twoot_pictures`);
-  },
-  filename: (req, file, callback) => {
-    callback(null, `${req.body.date}.${file.originalname}`);
-  }
-});
-
-const upload = multer({ storage });
-
-const ensureExists = (path, mask, cb) => {
-  fs.mkdir(path, err => {
-    if (err) {
-      if (err.code == 'EEXIST') cb(null);
-      else cb(err);
-    } else cb(null);
-  });
-};
 
 module.exports = app => {
-  app.post('/api/twoot', upload.single('file'), async (req, res, next) => {
+  app.post('/api/twoot', async (req, res, next) => {
     const id = uuid();
-    const file = req.file;
+    console.log(req.body);
+    const hashtags = req.body.hashtags.trim().split(' ');
+    const formatedHashtags = [];
+    hashtags.forEach(word => {
+      formatedHashtags.push(`'${word}'`);
+    });
+
+    const file = req.body.image;
+
+    try {
+      let img_name = null;
+      if (file !== '') {
+        img_name = file;
+        await sequelize.query(`
+        INSERT INTO twoots (id,author_id,content,Img_name,hashtags)
+        VALUES ('${id}', '${req.session.user}', '${req.body.content}', '${img_name}', ARRAY[${formatedHashtags}] )
+      `);
+      } else {
+        await sequelize.query(`
+        INSERT INTO twoots (id,author_id,content,hashtags)
+        VALUES ('${id}', '${req.session.user}', '${req.body.content}', ARRAY[${formatedHashtags}] )
+      `);
+      }
+
+      res.json(req.session);
+    } catch (error) {
+      console.log(error);
+      res.json(error);
+    }
+  });
+
+  app.post('/api/twoot/reply', async (req, res) => {
+    const id = uuid();
+    const file = req.body.image;
+
     const hashtags = req.body.hashtags.split(' ');
     try {
       let img_name = null;
-      if (file) {
-        img_name = `${req.body.date}.${file.originalname}`;
+      if (file !== '') {
+        img_name = file;
       }
-      await Twoot.create({
+      await global.db.Twoot.create({
         id: id,
         author_id: req.session.user,
         content: req.body.content,
         img_name,
-        hashtags
+        hashtags,
+        parent_twoot: req.body.parent_twoot_id
       });
       res.json(req.session);
     } catch (error) {
       res.json(error);
     }
   });
-
-  app.post(
-    '/api/twoot/reply',
-    upload.single('file'),
-    async (req, res, next) => {
-      const id = uuid();
-      const file = req.file;
-
-      const hashtags = req.body.hashtags.split(' ');
-      try {
-        let img_name = null;
-        if (file) {
-          img_name = `${req.body.date}.${file.originalname}`;
-        }
-        await Twoot.create({
-          id: id,
-          author_id: req.session.user,
-          content: req.body.content,
-          img_name,
-          hashtags,
-          parent_twoot: req.body.parent_twoot_id
-        });
-        await sequelize.query(`
-        UPDATE twoots
-        SET child_twoots = array_append(child_twoots, '${id}' )
-        WHERE id = '${req.body.parent_twoot_id}'; 
-      `);
-        res.json(req.session);
-      } catch (error) {
-        res.json(error);
-      }
-    }
-  );
 
   app.get('/api/twoot/:page', async (req, res) => {
     try {

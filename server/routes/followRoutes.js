@@ -1,5 +1,5 @@
 const uuid = require('uuid');
-const sequelize = require('../config/postgres.config');
+//const sequelize = require('../config/postgres.config');
 
 module.exports = app => {
   app.post('/api/followers/follow', async (req, res) => {

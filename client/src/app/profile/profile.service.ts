@@ -32,13 +32,15 @@ export class ProfileService {
     );
   }
 
-  saveProfileChanges(profilePic, coverPic) {
-    const formData = new FormData();
-    console.log(profilePic);
-    //formData.append('profilepic', profilePic);
-    //formData.append('coverpic', coverPic);
+  async saveProfileChanges(image_object: {
+    uploadCoverPic: string;
+    uploadProfilePic: string;
+  }) {
     return this.http
-      .post(this.saveProfileChangesUrl, { profilePic, coverPic })
+      .post(this.saveProfileChangesUrl, {
+        profilePic: image_object.uploadProfilePic,
+        coverPic: image_object.uploadCoverPic
+      })
       .pipe(
         catchError(this.handleError),
         tap(resData => {

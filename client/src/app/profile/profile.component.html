@@ -104,12 +104,13 @@
             Select profile picture
           </label>
           <input
-            #uploadFile
             type="file"
             id="uploadProfilePìc"
             class="input-profile-picture "
-            accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg, .docx, .pdf"
-            (change)="selectImage($event)"
+            accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg"
+            ng2FileSelect
+            [uploader]="uploader"
+            (change)="selectInputId($event)"
           />
         </div>
         <div class="row mt-3">
@@ -117,12 +118,13 @@
             Select cover picture
           </label>
           <input
-            #uploadFile
             type="file"
             id="uploadCoverPic"
             class="input-cover-picture ml-1"
-            accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg, .docx, .pdf"
-            (change)="selectImage($event)"
+            accept="image/jpeg, .jpeg, image/png, .png, image/pjpeg, .jpg"
+            ng2FileSelect
+            [uploader]="uploader"
+            (change)="selectInputId($event)"
           />
         </div>
       </div>
@@ -135,6 +137,7 @@
           class="btn btn-primary"
           data-dismiss="modal"
           (click)="saveProfileChanges()"
+          [disabled]="buttonEnabled"
         >
           Save changes
         </button>

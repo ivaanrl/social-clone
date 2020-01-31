@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone, Input } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TwootService } from '../shared/twoot.service';
 import { Twoot } from '../shared/twoot.interface';
 import { AuthService } from '../auth/auth.service';
 import { FollowService } from '../shared/follow.service';
+import {
+  FileUploaderOptions,
+  ParsedResponseHeaders,
+  FileUploader
+} from 'ng2-file-upload';
+import { Cloudinary } from '@cloudinary/angular-5.x';
 
 @Component({
   selector: 'app-profile',
@@ -37,18 +43,71 @@ export class ProfileComponent implements OnInit {
   coverPic: ImageData = null;
   page = 0;
   loadMoreTwoots = 0;
+  buttonEnabled = true;
 
+  response = {
+    uploadCoverPic: '',
+    uploadProfilePic: ''
+  };
+  uploader: FileUploader;
+  currentInput: string;
   constructor(
     private profileService: ProfileService,
     private authService: AuthService,
     private followService: FollowService,
     public router: Router,
     private twootService: TwootService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cloudinary: Cloudinary
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe(param => {
+      const uploaderOptions: FileUploaderOptions = {
+        url: `https://api.cloudinary.com/v1_1/${
+          this.cloudinary.config().cloud_name
+        }/upload`,
+        // Upload files automatically upon addition to upload queue
+        autoUpload: true,
+        // Use xhrTransport in favor of iframeTransport
+        isHTML5: true,
+        // Calculate progress independently for each uploaded file
+        removeAfterUpload: true,
+        // XHR request headers
+        headers: [
+          {
+            name: 'X-Requested-With',
+            value: 'XMLHttpRequest'
+          }
+        ]
+      };
+
+      this.uploader = new FileUploader(uploaderOptions);
+
+      this.uploader.onBuildItemForm = (fileItem: any, form: FormData): any => {
+        this.buttonEnabled = true;
+        form.append('upload_preset', this.cloudinary.config().upload_preset);
+        form.append('folder', this.profileInfo.id);
+        form.append('file', fileItem);
+
+        fileItem.withCredentials = false;
+        return { fileItem, form };
+      };
+
+      this.uploader.onCompleteItem = (
+        item: any,
+        response,
+        status: number,
+        headers: ParsedResponseHeaders
+      ) => {
+        if (this.currentInput === 'uploadCoverPic') {
+          this.response.uploadCoverPic = JSON.parse(response).secure_url;
+        } else {
+          this.response.uploadProfilePic = JSON.parse(response).secure_url;
+        }
+        this.buttonEnabled = false;
+      };
+
       this.twootsArray = [];
       this.page = 0;
       this.loadMoreTwoots = 0;
@@ -95,6 +154,11 @@ export class ProfileComponent implements OnInit {
         this.buttonText = 'Following';
       }
     }
+  }
+
+  selectInputId(event) {
+    this.currentInput = event.target.id;
+    console.log(this.currentInput);
   }
 
   getTwoots(page: number) {
@@ -201,10 +265,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  saveProfileChanges() {
-    let profileSub = this.profileService.saveProfileChanges(
-      this.profilePic,
-      this.coverPic
+  async saveProfileChanges() {
+    let profileSub = await this.profileService.saveProfileChanges(
+      this.response
     );
     profileSub.subscribe(resData => {
       //this.getProfileImg();
@@ -213,13 +276,13 @@ export class ProfileComponent implements OnInit {
 
   getProfileImg() {
     if (this.profileInfo) {
-      return `http://localhost:5000/api/profile/getProfilePicture/${this.profileInfo.id}/${this.profileInfo.profile_img_name}`;
+      return `${this.profileInfo.profile_img_name}`;
     }
   }
 
   getCoverImg() {
     if (this.profileInfo) {
-      return `http://localhost:5000/api/profile/getProfilePicture/${this.profileInfo.id}/${this.profileInfo.cover_pic_name}`;
+      return `${this.profileInfo.cover_pic_name}`;
     }
   }
 

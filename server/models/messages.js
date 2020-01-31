@@ -1,5 +1,3 @@
-const sequelize = require('../config/postgres.config');
-const Sequelize = require('sequelize');
 module.exports = Message = sequelize.define('message', {
   id: {
     type: Sequelize.STRING,
@@ -17,6 +15,11 @@ module.exports = Message = sequelize.define('message', {
     type: Sequelize.TEXT
   },
   createdAt: {
-    type: Sequelize.DATE
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
 });

@@ -1,4 +1,4 @@
-const sequelize = require('../config/postgres.config');
+//const sequelize = require('../config/postgres.config');
 const uuid = require('uuid');
 module.exports = app => {
   app.post('/api/notifications/sendNotification', async (req, res) => {

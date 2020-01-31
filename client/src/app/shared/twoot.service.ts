@@ -38,12 +38,10 @@ export class TwootService {
   }
 
   createTwoot(content: string, image) {
-    const formData = new FormData();
-
-    let hashtags: string[] = [];
+    let hashtags: string = '';
     content.split(' ').forEach(word => {
       if (word.match(this.regExpHashtag)) {
-        hashtags.push(word.substr(1));
+        hashtags += ' ' + word.substr(1);
       } else if (word.match(this.regExpUsername)) {
         this.notificationService.sendNotification(
           this.authService.user.value.getUsername,
@@ -52,26 +50,28 @@ export class TwootService {
         );
       }
     });
-
-    formData.append('date', Date.now().toString());
-    formData.append('content', content);
-    formData.append('hashtags', hashtags.join(' '));
-    formData.append('file', image);
     if (content === '') {
       return;
     }
-
-    return this.http.post(this.twootUrl, formData).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
+    console.log('hola');
+    console.log(hashtags.trim().split(' '));
+    return this.http
+      .post(this.twootUrl, {
+        date: Date.now().toString(),
+        content: content,
+        hashtags,
+        image
       })
-    );
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   replyTwoot(content: string, image, parent_twoot_id: string) {
-    const formData = new FormData();
-
+    console.log('hola');
     let hashtags: string[] = [];
     content.split(' ').forEach(word => {
       if (word.match(this.regExpHashtag)) {
@@ -84,22 +84,24 @@ export class TwootService {
         );
       }
     });
-
-    formData.append('date', Date.now().toString());
-    formData.append('content', content);
-    formData.append('hashtags', hashtags.join(' '));
-    formData.append('parent_twoot_id', parent_twoot_id);
-    formData.append('file', image);
     if (content === '') {
       return;
     }
 
-    return this.http.post(this.replyTwootUrl, formData).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
+    return this.http
+      .post(this.replyTwootUrl, {
+        date: Date.now().toString(),
+        content,
+        image,
+        parent_twoot_id,
+        hashtags
       })
-    );
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   getTwoots(page: number) {
