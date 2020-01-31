@@ -22,8 +22,6 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   signInUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/signin';
   signupUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/signup';
-  //signInUrl = 'http://localhost:5000/api/signin';
-  //signupUrl = 'http://localhost:5000/api/signup';
 
   constructor(private http: HttpClient, private router: Router) {}
 
