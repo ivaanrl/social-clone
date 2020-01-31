@@ -20,8 +20,8 @@ export interface SignUpForm {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   user = new BehaviorSubject<User>(null);
-  signInUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/signin';
   signupUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/signup';
+  signInUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/signin';
 
   constructor(private http: HttpClient, private router: Router) {}
 
