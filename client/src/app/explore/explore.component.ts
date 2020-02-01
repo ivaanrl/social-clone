@@ -27,12 +27,13 @@ export class ExploreComponent implements OnInit {
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {
-          twoot.createdAt = this.twootService.getTimeDifference(
-            twoot.createdAt
+          twoot.createDate = this.twootService.getTimeDifference(
+            twoot.createDate
           );
         });
         this.isLoading = false;
         twootsArray.forEach(twoot => {
+          console.log(twoot);
           this.twootsArray.push(twoot);
         });
       },

@@ -4,13 +4,13 @@ const uuid = require('uuid');
 module.exports = app => {
   app.post('/api/followers/follow', async (req, res) => {
     try {
-      console.log('Followinnnnnnnnnnnnnnnng');
       await sequelize.query(
         `INSERT INTO follows 
         VALUES ('${uuid()}',( SELECT id FROM users WHERE username='${
           req.body.follower
         }'), (SELECT id FROM users WHERE username='${req.body.following}'))`
       );
+
       res.json('Success!');
     } catch (error) {
       res.json(error);
@@ -28,6 +28,7 @@ module.exports = app => {
                           SELECT id FROM users WHERE username='${req.body.following}'
                           )`
       );
+
       res.json('Success!');
     } catch (error) {
       res.json(error);
@@ -43,6 +44,7 @@ module.exports = app => {
         AND 
         "follows"."follower_id" = (SELECT id FROM users WHERE username='${req.body.following}') LIMIT 1;`
       );
+
       if (followCheck[1].rowCount === 1) {
         res.json(true);
       } else {

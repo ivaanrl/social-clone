@@ -37,8 +37,8 @@ export class TwootWithRepliesComponent implements OnInit {
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {
-          twoot.createdAt = this.twootService.getTimeDifference(
-            twoot.createdAt
+          twoot.createDate = this.twootService.getTimeDifference(
+            twoot.createDate
           );
         });
         this.isLoading = false;

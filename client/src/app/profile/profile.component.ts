@@ -11,6 +11,7 @@ import {
   FileUploader
 } from 'ng2-file-upload';
 import { Cloudinary } from '@cloudinary/angular-5.x';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -58,7 +59,8 @@ export class ProfileComponent implements OnInit {
     public router: Router,
     private twootService: TwootService,
     private route: ActivatedRoute,
-    private cloudinary: Cloudinary
+    private cloudinary: Cloudinary,
+    private _location: Location
   ) {}
 
   ngOnInit() {
@@ -138,6 +140,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  goBack() {
+    this._location.back();
+  }
+
   getButtonClass() {
     if (this.btnFollow) {
       return 'btn-clear btn-clear-big';
@@ -169,8 +175,9 @@ export class ProfileComponent implements OnInit {
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {
-          twoot.createdAt = this.twootService.getTimeDifference(
-            twoot.createdAt
+          console.log(twoot);
+          twoot.createDate = this.twootService.getTimeDifference(
+            twoot.createDate
           );
         });
         this.isLoading = false;
@@ -204,9 +211,12 @@ export class ProfileComponent implements OnInit {
         following: number;
       }) => {
         if (!profileInfo) {
-          console.log('a');
           this.error = "This user doesn't exists";
         } else {
+          console.log(profileInfo);
+          profileInfo.followers = profileInfo.followers - 1;
+          profileInfo.following = profileInfo.following - 1;
+          console.log(profileInfo);
           this.profileInfo = profileInfo;
         }
         console.log(this.error);

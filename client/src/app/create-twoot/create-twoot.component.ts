@@ -7,6 +7,7 @@ import {
   FileUploader
 } from 'ng2-file-upload';
 import { Cloudinary } from '@cloudinary/angular-5.x';
+import { Twoot } from '../shared/twoot.interface';
 
 @Component({
   selector: 'app-create-twoot',
@@ -118,8 +119,10 @@ export class CreateTwootComponent implements OnInit {
       this.response
     );
     twootObs.subscribe(
-      async resData => {
+      async (resData: Twoot[]) => {
         this.progressWidth = 100;
+        console.log(resData);
+        this.twootService.getNewTwoot(resData[0]);
       },
       errorMessage => {
         this.error = errorMessage;
@@ -139,6 +142,7 @@ export class CreateTwootComponent implements OnInit {
   }
 
   getProfileImage() {
+    console.log(this.authService.user.value.getProfilePicName);
     return `${this.authService.user.value.getProfilePicName}`;
   }
 }

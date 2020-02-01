@@ -27,6 +27,11 @@ export class HomeComponent implements OnInit {
     this.twootService.NewTwootsEmitter.subscribe(async () => {
       await this.getTwoots(this.page);
     });
+
+    this.twootService.NewTwootEmitter.subscribe((twoot: Twoot) => {
+      console.log(twoot);
+      this.twootsArray.unshift(twoot);
+    });
   }
 
   async getTwoots(page: number) {
@@ -34,8 +39,8 @@ export class HomeComponent implements OnInit {
     twootObs.subscribe(
       (twootsArray: Twoot[]) => {
         twootsArray.forEach(twoot => {
-          twoot.createdAt = this.twootService.getTimeDifference(
-            twoot.createdAt
+          twoot.createDate = this.twootService.getTimeDifference(
+            twoot.createDate
           );
         });
         this.isLoading = false;

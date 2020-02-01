@@ -1,7 +1,5 @@
 const passport = require('passport');
-//const sequelize = require('../config/postgres.config');
 require('../services/passport');
-const User = require('../models/user');
 const uuid = require('uuid');
 
 module.exports = app => {
@@ -22,6 +20,7 @@ module.exports = app => {
         const response = await sequelize.query(
           `SELECT id, email, username, profile_pic_name FROM users WHERE id='${req.session.user}'`
         );
+
         res.json(response[0][0]);
       } catch (error) {
         res.json(error);
@@ -38,6 +37,7 @@ module.exports = app => {
         const response = await sequelize.query(
           `SELECT id, email, username, profile_pic_name FROM users WHERE id='${req.session.user}'`
         );
+
         res.json(response[0][0]);
       } catch (error) {
         res.json(error);
@@ -53,8 +53,4 @@ module.exports = app => {
   app.get('/api/current_user', (req, res) => {
     res.json(req.session);
   });
-};
-
-const getAllUsers = async () => {
-  return await User.findAll();
 };

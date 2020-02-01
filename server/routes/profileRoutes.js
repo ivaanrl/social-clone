@@ -19,7 +19,7 @@ module.exports = app => {
       }
 
       profileInfo[0][0].twoot_count = twootCount[0][0].twoot_count.toString();
-      console.log(profileInfo[0][0]);
+
       res.json(profileInfo[0][0]);
     } catch (error) {
       res.json(error);
@@ -29,10 +29,8 @@ module.exports = app => {
   app.post('/api/profile/saveChanges', async (req, res, next) => {
     const profilePic = req.body.profilePic;
     const coverPic = req.body.coverPic;
-    console.log(profilePic);
-    console.log(coverPic);
     try {
-      if (profilePic !== '') {
+      if (profilePic) {
         await sequelize.query(`
           UPDATE users
           SET profile_pic_name= '${profilePic}'
@@ -40,28 +38,15 @@ module.exports = app => {
           `);
       }
 
-      if (coverPic !== '') {
+      if (coverPic) {
         await sequelize.query(`
           UPDATE users
           SET cover_pic_name= '${coverPic}'
           WHERE id = '${req.session.user}'
           `);
       }
+
       res.json('success!');
     } catch (error) {}
   });
-
-  app.get(
-    '/api/profile/getProfilePicture/:user_id/:img_name',
-    async (req, res) => {
-      try {
-        res.sendFile(
-          __dirname +
-            `/uploads/${req.params.user_id}/profile_pictures/${req.params.img_name}`
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  );
 };

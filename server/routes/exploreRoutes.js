@@ -14,6 +14,7 @@ module.exports = app => {
         LIMIT 15 
         OFFSET ${parseInt(req.params.page, 10)}*15
       `);
+
       res.json(twoots[0]);
     } catch (error) {
       res.json(error);
@@ -33,6 +34,7 @@ module.exports = app => {
         LIMIT 15 
         OFFSET ${parseInt(req.params.page, 10)}*15
       `);
+
       res.json(twoots[0]);
     } catch (error) {
       res.json(error);
@@ -49,6 +51,7 @@ module.exports = app => {
         ORDER BY COUNT(*) DESC
         LIMIT 7
       `);
+
       res.json(hashtags[0]);
     } catch (error) {
       res.json(error);

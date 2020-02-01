@@ -36,6 +36,7 @@
 .back-button {
   font-size: 25px;
   color: $main-color;
+  cursor: pointer;
 }
 
 .top {
@@ -81,4 +82,8 @@
   margin-top: 5px;
   color: $muted-text;
   margin-bottom: 10px;
+}
+
+.info-container {
+  margin-top: 30px;
 }

@@ -7,19 +7,24 @@ module.exports = function(sequelize, DataTypes) {
       field: 'id'
     },
     first_name: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: false
     },
     last_name: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: false
     },
     email: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: false
     },
     username: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: false
     },
     password: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: false
     },
     about: {
       type: DataTypes.TEXT
@@ -37,12 +42,6 @@ module.exports = function(sequelize, DataTypes) {
     updatedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
-    },
-    modified: {
-      type: DataTypes.BOOLEAN
-    },
-    last_login: {
-      type: DataTypes.DATE
     }
   });
 };

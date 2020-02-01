@@ -7,10 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       field: 'id'
     },
     author_id: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     content: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     img_name: {
       type: DataTypes.TEXT
@@ -20,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     hashtags: {
       type: DataTypes.ARRAY(DataTypes.STRING)
+    },
+    createDate: {
+      type: DataTypes.STRING
     },
     createdAt: {
       type: DataTypes.DATE,

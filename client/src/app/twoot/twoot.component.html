@@ -22,7 +22,7 @@
       </div>
       <div class="twoot-username">{{ '@' + twootContent.username }}</div>
       <div class="twoot-time" (click)="navigateToTwoot()">
-        {{ '·  ' + twootContent.createdAt }}
+        {{ '·  ' + twootContent.createDate }}
       </div>
       <app-alert *ngIf="error" [message]="error"></app-alert>
     </div>

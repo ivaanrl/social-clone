@@ -4,6 +4,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { NotificationService } from './notification.service';
 import { AuthService } from '../auth/auth.service';
+import { Twoot } from './twoot.interface';
 
 export interface TwootContent {
   content: string;
@@ -26,6 +27,7 @@ export class TwootService {
   regExpHashtag: RegExp = /(#[^ ]+)/;
   regExpUsername: RegExp = /(@[^ ]+)/;
   NewTwootsEmitter = new EventEmitter();
+  NewTwootEmitter = new EventEmitter();
 
   constructor(
     private http: HttpClient,
@@ -35,6 +37,10 @@ export class TwootService {
 
   getNewTwoots() {
     this.NewTwootsEmitter.emit('getNewTwoots');
+  }
+
+  getNewTwoot(twoot: Twoot) {
+    this.NewTwootEmitter.emit(twoot);
   }
 
   createTwoot(content: string, image) {
@@ -154,8 +160,11 @@ export class TwootService {
   }
 
   getTimeDifference(twootTime: string) {
+    console.log(twootTime);
+    console.log(typeof twootTime);
+
     let dateTwoot: number | string =
-      (Date.now() - Date.parse(twootTime)) / 1000 / 60;
+      (Date.now() - parseInt(twootTime, 10)) / 1000 / 60;
     if (dateTwoot > 60 && dateTwoot < 1440) {
       dateTwoot /= 60;
       dateTwoot = Math.floor(dateTwoot);
@@ -169,6 +178,7 @@ export class TwootService {
       dateTwoot = Math.floor(dateTwoot);
       dateTwoot = `${dateTwoot}m`;
     }
+    console.log(dateTwoot);
     return dateTwoot;
   }
 

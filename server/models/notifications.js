@@ -7,10 +7,15 @@ module.exports = (sequelize, DataTypes) => {
       field: 'id'
     },
     user_id: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     content: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    createDate: {
+      type: DataTypes.STRING
     },
     createdAt: {
       type: DataTypes.DATE,

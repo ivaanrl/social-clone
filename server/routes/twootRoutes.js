@@ -3,7 +3,6 @@ const uuid = require('uuid');
 module.exports = app => {
   app.post('/api/twoot', async (req, res, next) => {
     const id = uuid();
-    console.log(req.body);
     const hashtags = req.body.hashtags.trim().split(' ');
     const formatedHashtags = [];
     hashtags.forEach(word => {
@@ -14,22 +13,31 @@ module.exports = app => {
 
     try {
       let img_name = null;
-      if (file !== '') {
+      if (file) {
         img_name = file;
         await sequelize.query(`
-        INSERT INTO twoots (id,author_id,content,Img_name,hashtags)
-        VALUES ('${id}', '${req.session.user}', '${req.body.content}', '${img_name}', ARRAY[${formatedHashtags}] )
-      `);
+        INSERT INTO twoots (id,author_id,content,Img_name,hashtags, "createDate")
+        VALUES ('${id}', '${req.session.user}', '${
+          req.body.content
+        }', '${img_name}', ARRAY[${formatedHashtags}], '${Date.now()}' )
+        `);
       } else {
         await sequelize.query(`
-        INSERT INTO twoots (id,author_id,content,hashtags)
-        VALUES ('${id}', '${req.session.user}', '${req.body.content}', ARRAY[${formatedHashtags}] )
+        INSERT INTO twoots (id,author_id,content,hashtags, "createDate")
+        VALUES ('${id}', '${req.session.user}', '${
+          req.body.content
+        }', ARRAY[${formatedHashtags}], '${Date.now()}' )
       `);
       }
-
-      res.json(req.session);
+      const twoot = await sequelize.query(`
+      SELECT first_name, last_name, content, twoots."createDate",
+        username, twoots.id AS twoot_id, users.id AS user_id, img_name, users.profile_pic_name AS profile_img_name
+        FROM twoots  
+        INNER JOIN users ON twoots.author_id = users.id 
+        WHERE twoots.id = '${id}' `);
+      console.log(twoot[0]);
+      res.json(twoot[0]);
     } catch (error) {
-      console.log(error);
       res.json(error);
     }
   });
@@ -39,19 +47,32 @@ module.exports = app => {
     const file = req.body.image;
 
     const hashtags = req.body.hashtags.split(' ');
+    const formatedHashtags = [];
+    hashtags.forEach(word => {
+      formatedHashtags.push(`'${word}'`);
+    });
     try {
       let img_name = null;
-      if (file !== '') {
+      if (file) {
         img_name = file;
+        await sequelize.query(`
+        INSERT INTO twoots (id,author_id,content,Img_name,hashtags,parent_twoot, "createDate")
+        VALUES ('${id}', '${req.session.user}', '${
+          req.body.content
+        }', '${img_name}', ARRAY[${formatedHashtags}],'${
+          req.body.parent_twoot_id
+        }', '${Date.now()}' )
+      `);
+      } else {
+        await sequelize.query(`
+        INSERT INTO twoots (id,author_id,content,hashtags,parent_twoot, "createDate")
+        VALUES ('${id}', '${req.session.user}', '${
+          req.body.content
+        }', ARRAY[${formatedHashtags}],'${
+          req.body.parent_twoot_id
+        }', '${Date.now()}' )
+      `);
       }
-      await global.db.Twoot.create({
-        id: id,
-        author_id: req.session.user,
-        content: req.body.content,
-        img_name,
-        hashtags,
-        parent_twoot: req.body.parent_twoot_id
-      });
       res.json(req.session);
     } catch (error) {
       res.json(error);
@@ -61,19 +82,19 @@ module.exports = app => {
   app.get('/api/twoot/:page', async (req, res) => {
     try {
       const twoots = await sequelize.query(
-        `SELECT DISTINCT first_name, last_name, content, twoots."createdAt",
+        `SELECT DISTINCT first_name, last_name, content, twoots."createDate",
         username, twoots.id AS twoot_id, users.id AS user_id, img_name, users.profile_pic_name AS profile_img_name
         FROM twoots  
         INNER JOIN users ON twoots.author_id = users.id 
         INNER JOIN follows ON follows.user_id = users.id
         WHERE follows.user_id IN (SELECT follower_id FROM follows
         WHERE user_id = '${req.session.user}')
-        ORDER BY twoots."createdAt" DESC 
+        ORDER BY twoots."createDate" DESC 
         LIMIT 15 
         OFFSET ${parseInt(req.params.page, 10)}*15
         `
       );
-
+      console.log(twoots[0]);
       res.json(twoots[0]);
     } catch (error) {
       res.json(error);
@@ -83,7 +104,7 @@ module.exports = app => {
   app.get('/api/twoot/exploreTwoot/:page', async (req, res) => {
     try {
       const twoots = await sequelize.query(`
-      SELECT first_name, last_name, content, twoots."createdAt",
+      SELECT first_name, last_name, content, twoots."createDate",
       username, twoots.id AS twoot_id, users.id AS user_id, img_name, 
       users.profile_pic_name AS profile_img_name
       FROM twoots
@@ -92,10 +113,11 @@ module.exports = app => {
       WHERE follows.user_id NOT IN (SELECT follower_id FROM follows
               WHERE user_id = '${req.session.user}')
           
-      ORDER BY twoots."createdAt" DESC
+      ORDER BY twoots."createDate" DESC
       LIMIT 15 
       OFFSET ${parseInt(req.params.page, 10)}*15
       `);
+
       res.json(twoots[0]);
     } catch (error) {
       res.json(error);
@@ -105,7 +127,7 @@ module.exports = app => {
   app.get('/api/twoot/reply/:page/:parent_id', async (req, res) => {
     try {
       const twoots = await sequelize.query(`
-      SELECT first_name, last_name, content, twoots."createdAt",
+      SELECT first_name, last_name, content, twoots."createDate",
       username, twoots.id AS twoot_id, users.id AS user_id, img_name, 
       users.profile_pic_name AS profile_img_name
       FROM twoots
@@ -113,10 +135,11 @@ module.exports = app => {
       WHERE twoots.id = '${req.params.parent_id}' OR parent_twoot = '${
         req.params.parent_id
       }'
-      ORDER BY twoots."createdAt" DESC
+      ORDER BY twoots."createDate" DESC
       LIMIT 15
       OFFSET ${parseInt(req.params.page, 10)}*15
       `);
+
       res.json(twoots[0]);
     } catch (error) {
       res.json(error);
@@ -126,13 +149,14 @@ module.exports = app => {
   app.post('/api/userTwoots', async (req, res) => {
     try {
       const userTwoots = await sequelize.query(
-        `SELECT first_name, last_name, content, twoots."createdAt", twoots.id AS twoot_id , users.id AS user_id, img_name, username, users.profile_pic_name AS profile_img_name FROM twoots INNER JOIN users on twoots.author_id = users.id 
+        `SELECT first_name, last_name, content, twoots."createDate", twoots.id AS twoot_id , users.id AS user_id, img_name, username, users.profile_pic_name AS profile_img_name FROM twoots INNER JOIN users on twoots.author_id = users.id 
         WHERE username='${req.body.username}' 
-        ORDER BY twoots."createdAt" DESC
+        ORDER BY twoots."createDate" DESC
         LIMIT 15 
         OFFSET ${parseInt(req.body.page, 10)}*15
         `
       );
+
       res.json(userTwoots[0]);
     } catch (error) {
       res.json(error);
@@ -161,6 +185,7 @@ module.exports = app => {
           `
         );
       }
+
       res.json('Success!');
     } catch (error) {
       res.json(error);
@@ -180,17 +205,6 @@ module.exports = app => {
       } else {
         res.json(true);
       }
-    } catch (error) {
-      res.json(error);
-    }
-  });
-
-  app.get('/api/twoots/getTwootImage/:user_id/:img_name', async (req, res) => {
-    try {
-      res.sendFile(
-        __dirname +
-          `/uploads/${req.params.user_id}/twoot_pictures/${req.params.img_name}`
-      );
     } catch (error) {
       res.json(error);
     }

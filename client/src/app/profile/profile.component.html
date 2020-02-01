@@ -1,7 +1,7 @@
 <app-alert *ngIf="!(error === null)" [message]="error"></app-alert>
 <div class="profile-header" *ngIf="error === null">
   <div class="top d-flex flex-row align-items-center justify-content-start">
-    <div class="back-button mr-4 ml-1">
+    <div class="back-button mr-4 ml-1" (click)="goBack()">
       <i class="Icon Icon--arrowLeft"></i>
     </div>
     <div class="text-top mt-4">

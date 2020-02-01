@@ -3,8 +3,6 @@ if (!global.hasOwnProperty('db')) {
   sequelize = null;
 
   if (process.env.DATABASE_URL) {
-    console.log('DATABASE URL:');
-    console.log(process.env.DATABASE_URL);
     try {
       sequelize = new Sequelize(process.env.DATABASE_URL, {
         dialect: 'postgres',

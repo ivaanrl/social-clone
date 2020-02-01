@@ -17,7 +17,7 @@ export class TwootComponent implements OnInit {
     username: string;
     img_name: string;
     user_id: string;
-    createdAt: string;
+    createDate: string;
     content: string;
     profile_img_name: string;
   };

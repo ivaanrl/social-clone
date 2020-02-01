@@ -7,10 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       field: 'id'
     },
     user_id: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     twoot_id: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     createdAt: {
       type: DataTypes.DATE,
