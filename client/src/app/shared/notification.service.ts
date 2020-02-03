@@ -1,7 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+
+const httpGetOptions = {
+  withCredentials: true
+};
+
+const httpPostOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }),
+  withCredentials: true
+};
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
@@ -17,29 +33,33 @@ export class NotificationService {
     message: string
   ) {
     let sendNotification = this.http
-      .post(this.sendNotificationUrl, {
-        sender_username,
-        receiver_username,
-        message
-      })
+      .post(
+        this.sendNotificationUrl,
+        {
+          sender_username,
+          receiver_username,
+          message
+        },
+        httpPostOptions
+      )
       .pipe(
         catchError(this.handleError),
         tap(resData => {
           return resData;
         })
       );
-    sendNotification.subscribe(resData => {
-      console.log(resData);
-    });
+    sendNotification.subscribe(resData => {});
   }
 
   getNotifications(username: string) {
-    return this.http.post(this.getNotificationsUrl, { username }).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
-      })
-    );
+    return this.http
+      .post(this.getNotificationsUrl, { username }, httpPostOptions)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   private handleError(errorRes: HttpErrorResponse) {

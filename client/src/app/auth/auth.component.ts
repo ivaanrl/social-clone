@@ -29,7 +29,6 @@ export class AuthComponent implements OnInit {
         this.router.navigate(['/']);
       },
       errorMessage => {
-        console.log(errorMessage);
         if (errorMessage === 'An unkwown error ocurred!') {
           this.error = 'Incorrect email/username or password';
           this.isLoading = false;

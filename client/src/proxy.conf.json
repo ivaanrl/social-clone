@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "target": "https://cryptic-anchorage-68791.herokuapp.com/
+    https://cryptic-anchorage-68791.herokuapp.com",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}

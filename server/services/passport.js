@@ -72,7 +72,7 @@ passport.use(
             last_name: req.body.lastname,
             username: req.body.username
           });
-          console.log(newUser);
+
           return done(null, newUser);
         } catch (error) {
           done(error);

@@ -33,12 +33,11 @@ export class ExploreComponent implements OnInit {
         });
         this.isLoading = false;
         twootsArray.forEach(twoot => {
-          console.log(twoot);
           this.twootsArray.push(twoot);
         });
       },
       errorMessage => {
-        this.error = errorMessage;
+        this.error = 'Something went wrong.';
       }
     );
   }

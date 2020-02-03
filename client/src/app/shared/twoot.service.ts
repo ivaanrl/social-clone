@@ -1,5 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { NotificationService } from './notification.service';
@@ -9,6 +13,18 @@ import { Twoot } from './twoot.interface';
 export interface TwootContent {
   content: string;
 }
+
+const httpGetOptions = {
+  withCredentials: true
+};
+
+const httpPostOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }),
+  withCredentials: true
+};
 
 @Injectable({ providedIn: 'root' })
 export class TwootService {
@@ -59,15 +75,17 @@ export class TwootService {
     if (content === '') {
       return;
     }
-    console.log('hola');
-    console.log(hashtags.trim().split(' '));
     return this.http
-      .post(this.twootUrl, {
-        date: Date.now().toString(),
-        content: content,
-        hashtags,
-        image
-      })
+      .post(
+        this.twootUrl,
+        {
+          date: Date.now().toString(),
+          content: content,
+          hashtags,
+          image
+        },
+        httpPostOptions
+      )
       .pipe(
         catchError(this.handleError),
         tap(resData => {
@@ -77,7 +95,6 @@ export class TwootService {
   }
 
   replyTwoot(content: string, image, parent_twoot_id: string) {
-    console.log('hola');
     let hashtags: string[] = [];
     content.split(' ').forEach(word => {
       if (word.match(this.regExpHashtag)) {
@@ -95,13 +112,17 @@ export class TwootService {
     }
 
     return this.http
-      .post(this.replyTwootUrl, {
-        date: Date.now().toString(),
-        content,
-        image,
-        parent_twoot_id,
-        hashtags
-      })
+      .post(
+        this.replyTwootUrl,
+        {
+          date: Date.now().toString(),
+          content,
+          image,
+          parent_twoot_id,
+          hashtags
+        },
+        httpPostOptions
+      )
       .pipe(
         catchError(this.handleError),
         tap(resData => {
@@ -111,7 +132,7 @@ export class TwootService {
   }
 
   getTwoots(page: number) {
-    return this.http.get(this.twootUrl + page).pipe(
+    return this.http.get(this.twootUrl + page, httpGetOptions).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;
@@ -120,7 +141,7 @@ export class TwootService {
   }
 
   getExploreTwoots(page: number) {
-    return this.http.get(this.exploreTwootUrl + page).pipe(
+    return this.http.get(this.exploreTwootUrl + page, httpGetOptions).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;
@@ -140,12 +161,14 @@ export class TwootService {
   }
 
   getHashtagTwoots(hashtag: string, page: number) {
-    return this.http.get(this.hashtagTwootUrl + hashtag + '/' + page).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
-      })
-    );
+    return this.http
+      .get(this.hashtagTwootUrl + hashtag + '/' + page, httpGetOptions)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   getSearchTwoots(search: string, page: number) {
@@ -160,9 +183,6 @@ export class TwootService {
   }
 
   getTimeDifference(twootTime: string) {
-    console.log(twootTime);
-    console.log(typeof twootTime);
-
     let dateTwoot: number | string =
       (Date.now() - parseInt(twootTime, 10)) / 1000 / 60;
     if (dateTwoot > 60 && dateTwoot < 1440) {
@@ -178,17 +198,18 @@ export class TwootService {
       dateTwoot = Math.floor(dateTwoot);
       dateTwoot = `${dateTwoot}m`;
     }
-    console.log(dateTwoot);
     return dateTwoot;
   }
 
   favClick(twoot_id: string, username: string) {
-    return this.http.post(this.favUrl, { twoot_id, username }).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
-      })
-    );
+    return this.http
+      .post(this.favUrl, { twoot_id, username }, httpPostOptions)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   getFav(twoot_id: string, username: string) {
@@ -201,7 +222,7 @@ export class TwootService {
   }
 
   getMostUsedHashtags() {
-    return this.http.get(this.getMostUsedHashtagsUrl).pipe(
+    return this.http.get(this.getMostUsedHashtagsUrl, httpGetOptions).pipe(
       catchError(this.handleError),
       tap(resData => {
         return resData;

@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { User } from './user.model';
 import { catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, throwError } from 'rxjs';
@@ -17,9 +21,23 @@ export interface SignUpForm {
   password: string;
 }
 
+const httpGetOptions = {
+  withCredentials: true
+};
+
+const httpPostOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }),
+  withCredentials: true
+};
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private tokenExpirationTimer: any;
   user = new BehaviorSubject<User>(null);
+
   signupUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/signup';
   signInUrl = 'https://cryptic-anchorage-68791.herokuapp.com/api/signin';
 
@@ -27,10 +45,14 @@ export class AuthService {
 
   signIn(email: string, password: string) {
     return this.http
-      .post<Form>(this.signInUrl, {
-        email: email,
-        password: password
-      })
+      .post<Form>(
+        this.signInUrl,
+        {
+          email: email,
+          password: password
+        },
+        httpPostOptions
+      )
       .pipe(
         catchError(this.handleError),
         tap(resData => {
@@ -47,13 +69,17 @@ export class AuthService {
     password: string
   ) {
     return this.http
-      .post<Form>(this.signupUrl, {
-        username,
-        email,
-        firstname,
-        lastname,
-        password
-      })
+      .post<Form>(
+        this.signupUrl,
+        {
+          username,
+          email,
+          firstname,
+          lastname,
+          password
+        },
+        httpPostOptions
+      )
       .pipe(
         catchError(this.handleError),
         tap(resData => {
@@ -66,6 +92,10 @@ export class AuthService {
     this.user.next(null);
     this.router.navigate(['/auth']);
     localStorage.removeItem('userData');
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
   }
 
   autosignin() {
@@ -77,10 +107,22 @@ export class AuthService {
       userData.email,
       userData.id,
       userData.username,
-      userData.profile_pic_name
+      userData.profile_pic_name,
+      userData.date
     );
-    //NEED TO CHECK FOR TOKEN EXPIRATION DATE
+    if (loadedUser.date) {
+      this.user.next(loadedUser);
+      const expirationDuration =
+        new Date(userData.Date).getTime() - new Date().getTime();
+      this.autoLogout(expirationDuration);
+    }
     this.user.next(loadedUser);
+  }
+
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
   }
 
   handleAuthentication(data: any) {
@@ -88,7 +130,8 @@ export class AuthService {
       data.email,
       data.id,
       data.username,
-      data.profile_pic_name
+      data.profile_pic_name,
+      Date.now() + 3600 * 1000
     );
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));

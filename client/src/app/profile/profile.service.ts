@@ -1,7 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+
+const httpPostOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }),
+  withCredentials: true
+};
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
@@ -15,21 +27,25 @@ export class ProfileService {
   constructor(private http: HttpClient) {}
 
   getUserTwoots(username: string, page: number) {
-    return this.http.post(this.userTwootsUrl, { username, page }).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
-      })
-    );
+    return this.http
+      .post(this.userTwootsUrl, { username, page }, httpPostOptions)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   getProfileInfo(username: string) {
-    return this.http.post(this.profileInfoUrl, { username }).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
-      })
-    );
+    return this.http
+      .post(this.profileInfoUrl, { username }, httpPostOptions)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   async saveProfileChanges(image_object: {
@@ -37,10 +53,14 @@ export class ProfileService {
     uploadProfilePic: string;
   }) {
     return this.http
-      .post(this.saveProfileChangesUrl, {
-        profilePic: image_object.uploadProfilePic,
-        coverPic: image_object.uploadCoverPic
-      })
+      .post(
+        this.saveProfileChangesUrl,
+        {
+          profilePic: image_object.uploadProfilePic,
+          coverPic: image_object.uploadCoverPic
+        },
+        httpPostOptions
+      )
       .pipe(
         catchError(this.handleError),
         tap(resData => {
@@ -51,7 +71,6 @@ export class ProfileService {
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = errorRes;
-    console.log(errorMessage);
     return throwError(errorMessage);
   }
 }

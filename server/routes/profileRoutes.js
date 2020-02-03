@@ -1,8 +1,12 @@
 module.exports = app => {
   app.post('/api/profile/basicInfo', async (req, res, next) => {
     try {
-      const profileInfo = await sequelize.query(
-        `SELECT users.id,first_name,last_name,email,about, users."createdAt", about,profile_pic_name AS profile_img_name, cover_pic_name,
+      if (req.method == 'OPTIONS') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end();
+      } else {
+        const profileInfo = await sequelize.query(
+          `SELECT users.id,first_name,last_name,email,about, users."createdAt", about,profile_pic_name AS profile_img_name, cover_pic_name,
          (SELECT COUNT(*) FROM FOLLOWS WHERE user_id = (SELECT id FROM users WHERE username='${req.body.username}')) AS following,
         (SELECT COUNT(*) FROM follows where follower_id = (SELECT id FROM users WHERE username='${req.body.username}')) AS followers
              FROM users 
@@ -10,17 +14,18 @@ module.exports = app => {
              WHERE username='${req.body.username}' 
              GROUP BY first_name,last_name,email,about, users."createdAt", profile_img_name, cover_pic_name, users.id
     `
-      );
-      const twootCount = await sequelize.query(`
+        );
+        const twootCount = await sequelize.query(`
       SELECT COUNT(*) AS twoot_count FROM twoots WHERE author_id = (SELECT id FROM users WHERE username='${req.body.username}')
       `);
-      if (!profileInfo) {
-        next(error);
+        if (!profileInfo) {
+          next(error);
+        }
+
+        profileInfo[0][0].twoot_count = twootCount[0][0].twoot_count.toString();
+
+        res.json(profileInfo[0][0]);
       }
-
-      profileInfo[0][0].twoot_count = twootCount[0][0].twoot_count.toString();
-
-      res.json(profileInfo[0][0]);
     } catch (error) {
       res.json(error);
     }

@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
     });
 
     this.twootService.NewTwootEmitter.subscribe((twoot: Twoot) => {
-      console.log(twoot);
+      twoot.createDate = this.twootService.getTimeDifference(twoot.createDate);
       this.twootsArray.unshift(twoot);
     });
   }

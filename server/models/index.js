@@ -7,7 +7,7 @@ if (!global.hasOwnProperty('db')) {
       sequelize = new Sequelize(process.env.DATABASE_URL, {
         dialect: 'postgres',
         protocol: 'postgres',
-        logging: true, //false,
+        logging: false, //true
         dialectOptions: {
           ssl: true
         }

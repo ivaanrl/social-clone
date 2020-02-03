@@ -1,6 +1,7 @@
 const passport = require('passport');
 require('../services/passport');
 const uuid = require('uuid');
+const cors = require('cors');
 
 module.exports = app => {
   app.get('/users', (req, res) => {

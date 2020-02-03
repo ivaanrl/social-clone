@@ -1,9 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { NotificationService } from './notification.service';
 import { AuthService } from '../auth/auth.service';
+
+const httpGetOptions = {
+  withCredentials: true
+};
+
+const httpPostOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }),
+  withCredentials: true
+};
 
 @Injectable({ providedIn: 'root' })
 export class FollowService {
@@ -21,35 +37,41 @@ export class FollowService {
   ) {}
 
   isFollowing(follower: string, following: string) {
-    return this.http.post(this.followCheckUrl, { follower, following }).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
-      })
-    );
+    return this.http
+      .post(this.followCheckUrl, { follower, following }, httpPostOptions)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   follow(follower: string, following: string) {
-    return this.http.post(this.followUrl, { follower, following }).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        this.notificationService.sendNotification(
-          follower,
-          following,
-          `${this.authService.user.value.getUsername} is following you!`
-        );
-        return resData;
-      })
-    );
+    return this.http
+      .post(this.followUrl, { follower, following }, httpPostOptions)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.notificationService.sendNotification(
+            follower,
+            following,
+            `${this.authService.user.value.getUsername} is following you!`
+          );
+          return resData;
+        })
+      );
   }
 
   unfollow(follower: string, following: string) {
-    return this.http.post(this.unfollowUrl, { follower, following }).pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        return resData;
-      })
-    );
+    return this.http
+      .post(this.unfollowUrl, { follower, following }, httpPostOptions)
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          return resData;
+        })
+      );
   }
 
   private handleError(errorRes: HttpErrorResponse) {

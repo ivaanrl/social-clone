@@ -35,7 +35,7 @@ module.exports = app => {
         FROM twoots  
         INNER JOIN users ON twoots.author_id = users.id 
         WHERE twoots.id = '${id}' `);
-      console.log(twoot[0]);
+
       res.json(twoot[0]);
     } catch (error) {
       res.json(error);
@@ -94,7 +94,7 @@ module.exports = app => {
         OFFSET ${parseInt(req.params.page, 10)}*15
         `
       );
-      console.log(twoots[0]);
+
       res.json(twoots[0]);
     } catch (error) {
       res.json(error);

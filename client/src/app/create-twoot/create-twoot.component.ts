@@ -73,7 +73,6 @@ export class CreateTwootComponent implements OnInit {
     ) => {
       this.response = JSON.parse(response).secure_url;
 
-      console.log(this.response);
       this.buttonDisabled = false;
     };
   }
@@ -121,7 +120,6 @@ export class CreateTwootComponent implements OnInit {
     twootObs.subscribe(
       async (resData: Twoot[]) => {
         this.progressWidth = 100;
-        console.log(resData);
         this.twootService.getNewTwoot(resData[0]);
       },
       errorMessage => {
@@ -142,7 +140,6 @@ export class CreateTwootComponent implements OnInit {
   }
 
   getProfileImage() {
-    console.log(this.authService.user.value.getProfilePicName);
     return `${this.authService.user.value.getProfilePicName}`;
   }
 }
