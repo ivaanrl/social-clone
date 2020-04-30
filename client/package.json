@@ -23,7 +23,7 @@
     "bootstrap": "^4.4.1",
     "cloudinary-core": "^2.8.0",
     "edgeicons": "^1.0.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "json": "^9.0.6",
     "ng2-file-upload": "^1.4.0",
     "ngx-infinite-scroll": "^8.0.1",
